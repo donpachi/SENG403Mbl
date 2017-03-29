@@ -6,14 +6,18 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-
     <Canvas>
+
         <Canvas.Background>
             <SolidColorBrush Color="#FF270010"/>
         </Canvas.Background>
         <Canvas x:Name="time_canvas" HorizontalAlignment="Center" VerticalAlignment="Center" Canvas.Left="85" Canvas.Top="30" >
             <local:Clock x:Name="analog_clock" HorizontalAlignment="Center" VerticalAlignment="Center"></local:Clock>
-
+            <Button x:Name="buttonDismissAlarm" Content="Dismiss" Canvas.Left="-52"  Width="300" Height="100" Canvas.Top="320" FontSize="24" Visibility="Collapsed" Background="#33FFFFFF" Click="clickDismiss"/>
+            <Button x:Name="buttonSnoozeAlarm" Content="Snooze" Canvas.Left="-52"  Width="300" Height="100" Canvas.Top="425" FontSize="24" Visibility="Collapsed" Background="#33FFFFFF" Click="clickSnooze"/>
         </Canvas>
+        <Button x:Name="setAlarm" Content="Set Alarm" Canvas.Left="85" Canvas.Top="465" Height="50" Width="176" Background="#33FFFFFF" Click="setClicked" Visibility="Visible"/>
+        <TimePicker x:Name="timePicker" Canvas.Left="55" Canvas.Top="415" Visibility="Collapsed"/>
+        <Button x:Name="confirmAlarm" Content="Confirm Alarm" Canvas.Left="85" Canvas.Top="465" Height="50" Width="176" Background="#33FFFFFF" Click="confirmClicked" Visibility="Collapsed"/>
     </Canvas>
 </Page>
