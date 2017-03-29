@@ -1,0 +1,27 @@
+﻿<UserControl
+    x:Class="SENG403Mobile.Clock"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:SENG403Mobile"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="325"
+    d:DesignWidth="190">
+    <Canvas>
+        <Canvas x:Name="analog_canvas" Width="150" Height="150" Canvas.Left="20" Canvas.Top="20">
+            <Image x:Name="clock_canvas_image" Height="150" Width="150" Source="Assets/clock_canvas.png"/>
+            <Image x:Name="hour_hand_image" Height="32"  Width="1.835" Canvas.Left="74.0825" Canvas.Top="43" Source="Assets/hour_hand.png"/>
+            <Image x:Name="minute_hand_image" Height="49.5"  Width="1.835" Canvas.Left="74.0825" Canvas.Top="25.5" Source="Assets/minute_hand.png"/>
+            <Image x:Name="second_hand_image" Height="73"  Width="1" Canvas.Left="74.5" Canvas.Top="2" Source="Assets/second_hand.png"/>
+
+        </Canvas>
+        <Canvas x:Name="digital_canvas" Width="150" Height="150" Canvas.Top="175" Canvas.Left="22">
+            <TextBlock x:Name="hour_text" FontSize="90" Canvas.Top="10" Foreground="#D8FFFFFF" TextAlignment="Center" Text="01" FontWeight="Light" Canvas.Left="2"/>
+            <Canvas x:Name="min_sec_digi" Width="50" Height="75" Canvas.Top="38" Canvas.Left="88">
+                <TextBlock x:Name="min_text" Text="23" FontSize="40" Foreground="#D8FFFFFF" Canvas.Top="-10" FontWeight="Light" Canvas.Left="9"/>
+                <TextBlock x:Name="sec_text" Text="45" FontSize="40" Canvas.Top="26" Foreground="#59FFFFFF" FontWeight="Light" Canvas.Left="8"/>
+            </Canvas>
+        </Canvas>
+    </Canvas>
+</UserControl>
