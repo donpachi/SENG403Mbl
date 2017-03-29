@@ -1,8 +1,8 @@
 ﻿using SENG403Mobile;
 using System;
 using System.Collections.Generic;
-using Windows.UI.Xaml;
 using Windows.Media.Playback;
+using Windows.UI.Xaml;
 
 namespace SENG403Mobile
 {
@@ -15,11 +15,6 @@ namespace SENG403Mobile
     {
         static public event EventHandler CustomEvent;
 
-        static public void RaiseMyCustomEvent(object sender, EventArgs args)
-        {
-            if (CustomEvent != null) CustomEvent(sender, args);
-        }
-
         // Create a list of Alarms
         public List<Alarm> alarmList;
 
@@ -31,6 +26,9 @@ namespace SENG403Mobile
         public AlarmHandler()
         {
             // The Currently RINGING alarm, if applicable
+            this.currentAlarm = null;
+
+            // Create a list of Alarms and populate it with any previously set alarms
             this.alarmList = new List<Alarm>();
 
             // Start the clock
@@ -92,22 +90,20 @@ namespace SENG403Mobile
             // Create a timer object
             DispatcherTimer timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(1);   // Set the timer interval to one second
-            //timer.Tick += tickevent;    // After every one second, we trigger a tick event
-            timer.Tick += Timer_Tick;
+            timer.Tick += Timer_Tick; ;    // After every one second, we trigger a tick event
             timer.Start();  // Start the timer
         }
 
         private void Timer_Tick(object sender, object e)
         {
             // Get the CURRENT date and time in the form: 'yyyy-mm-dd hh:mm:ss AM/PM' (i.e: 2017-01-28 12:20:00 PM)
-            TimeSpan time = DateTime.Now.TimeOfDay;//.ToString();//Clock.Now().TimeOfDay;
-            String currTime = DateTime.Now.ToString("HH:mm:ss");
+            DateTime dateAndTime = Clock.Now();
 
             // Creates the day object
-            //int day = dayofweek(dateAndTime.Day, dateAndTime.Month, dateAndTime.Year);
+            int day = dayofweek(dateAndTime.Day, dateAndTime.Month, dateAndTime.Year);
 
             // Get only the time from the DateTime object
-            //String time = dateAndTime.ToString();
+            String time = dateAndTime.ToString("HH:mm:ss");
 
             // Check every second if the current time is the one we're checking for
             // If so, set the alarm to ring
@@ -115,7 +111,7 @@ namespace SENG403Mobile
             {
                 // If the current time is one of the alarms, then check if the day is also correct
                 //if (time.Equals(alarm.getTime()))
-                if (currTime == alarm.getTimeOnly())
+                if (time == alarm.getDateTime().ToString("HH:mm:ss"))
                 {
 
                     // Play the alarm and set the current alarm to this alarm
@@ -125,7 +121,7 @@ namespace SENG403Mobile
                 }
             }
         }
-
+        
         /// <summary>
         /// Handle the input data once the "set alarm" button is pressed
         /// Days string should be 7 digits long, "1" represents a selected day, "0" represents a non-selected day
@@ -139,9 +135,40 @@ namespace SENG403Mobile
             alarmList.Add(new Alarm(time));
         }
 
-        public void setNewAlarmTime(String time)
+        /// <summary>
+        /// Determines the day of the week and outputs a numeric representation of it
+        /// </summary>
+        /// <param name="d">Day</param>
+        /// <param name="m">Month</param>
+        /// <param name="y">Year</param>
+        /// <returns></returns>
+        private int dayofweek(int d, int m, int y)
         {
-            alarmList.Add(new Alarm(time));
+
+            // Determine the day of the week that the alarm is set to
+            DateTime date1 = new DateTime(y, m, d);
+            String date = date1.ToString("F");
+            String day = date.Split(',')[0];
+            switch (day)
+            {
+                case "Sunday":
+                    return 0;
+                case "Monday":
+                    return 1;
+                case "Tuesday":
+                    return 2;
+                case "Wednesday":
+                    return 3;
+                case "Thursday":
+                    return 4;
+                case "Friday":
+                    return 5;
+                case "Saturday":
+                    return 6;
+            }
+
+            // Code should never reach here
+            throw new Exception("Day of the week..");
         }
     }
 
@@ -152,15 +179,13 @@ namespace SENG403Mobile
     /// </summary>
     public class Alarm
     {
-        String timeString;
-        TimeSpan timespan;
+
         DateTime settime;
         DateTime time;
         String days;
         Boolean repeat = false;
         bool currentlyRinging;
         String message;
-        //SoundModule alarmSound;
 
         public delegate void AlarmEvent();
         public static event AlarmEvent onRing;
@@ -191,13 +216,6 @@ namespace SENG403Mobile
             if (days != "0000000") { repeat = true; }
         }
 
-        public Alarm(String time)
-        {
-            this.timeString = time;
-            this.timespan = TimeSpan.Parse(time);
-
-        }
-
         public String getMessage() { return message; }
 
         public void setMessage(String msg)
@@ -209,13 +227,13 @@ namespace SENG403Mobile
         /// Return the time this alarm is set to ring.
         /// </summary>
         /// <returns>String representation of the time the alarm is set to ring.</returns>
-        public String getDateTime()
+        public DateTime getDateTime()
         {
-            return time.ToString();
+            return time;
         }
 
         /// <summary>
-        /// Return the days the alarm is set to ring on. 
+        /// Return the days the alarm is set to ring on.
         /// </summary>
         /// <returns>Days the alarm is ringing on.</returns>
         public String getDays() { return days; }
@@ -227,10 +245,6 @@ namespace SENG403Mobile
         public void snooze(Double minutes)
         {
             time = Clock.Now().AddMinutes(minutes);
-            String currTime = DateTime.Now.ToString("HH:mm:ss");
-            timespan = TimeSpan.Parse(currTime).Add(new TimeSpan(0, (int)minutes, 0));
-            //timespan = DateTime.Now.TimeOfDay.Add(new TimeSpan(00, (int)minutes, 00));
-            timeString = timespan.ToString();
             BackgroundMediaPlayer.Current.Pause();
         }
 
@@ -254,13 +268,11 @@ namespace SENG403Mobile
             this.currentlyRinging = val;
             if (val == true)
             {
-                //alarmSound.playSound();
-                AlarmRinging();
                 BackgroundMediaPlayer.Current.Play();
+                AlarmRinging();
             }
             else {
                 BackgroundMediaPlayer.Current.Pause();
-               // alarmSound.stopSound();
             }
         }
 
@@ -309,24 +321,11 @@ namespace SENG403Mobile
         /// <returns></returns>
         public String getRepeat() { return this.repeat.ToString(); }
 
-        public String getTimeOnly()
-        {
-            return this.timeString;
-        }
-
         /// <summary>
         /// Return whether the alarm is currently ringing.
         /// </summary>
         /// <returns></returns>
         public String getCurrentlyRinging() { return this.currentlyRinging.ToString(); }
-
-        /// <summary>
-        /// Return the alarm sound of the alarm.
-        /// </summary>
-        /// <returns></returns>
-        //public String getSound() {
-        //    return this.alarmSound.currentSound;
-        //}
 
         public int getHour() { return this.settime.Hour; }
         public int getMinute() { return this.settime.Minute; }

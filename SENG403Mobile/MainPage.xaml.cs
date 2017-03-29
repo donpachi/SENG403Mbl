@@ -44,24 +44,6 @@ namespace SENG403Mobile
 
         }
 
-        private void button_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                BackgroundMediaPlayer.Current.SetUriSource(new Uri("ms-appx:///Sounds/sawarp1.wav"));
-
-                BackgroundMediaPlayer.Current.Play();
-            }
-            catch (Exception ex)
-            {
-                if (ex is FormatException)
-                {
-                    // handle exception.
-                    // For example: Log error or notify user problem with file
-                }
-            }
-        }
-
         private void OnAlarmRing()
         {
             BackgroundMediaPlayer.Current.Play();
@@ -77,7 +59,10 @@ namespace SENG403Mobile
             buttonDismissAlarm.Visibility = Visibility.Collapsed;
             buttonSnoozeAlarm.Visibility = Visibility.Collapsed;
             BackgroundMediaPlayer.Current.Pause();
+            setAlarm.Visibility = Visibility.Visible;
             alarmHandler.currentAlarm.snooze(1);
+            BackgroundMediaPlayer.Current.SetUriSource(new Uri("ms-winsoundevent:Notification.Looping.Alarm10"));
+            BackgroundMediaPlayer.Current.Pause();
 
         }
 
@@ -86,6 +71,7 @@ namespace SENG403Mobile
             buttonDismissAlarm.Visibility = Visibility.Collapsed;
             buttonSnoozeAlarm.Visibility = Visibility.Collapsed;
             BackgroundMediaPlayer.Current.Pause();
+            setAlarm.Visibility = Visibility.Visible;
             alarmHandler.currentAlarm = null;
         }
 
@@ -102,9 +88,12 @@ namespace SENG403Mobile
             timePicker.Visibility = Visibility.Collapsed;
             setAlarm.Visibility = Visibility.Visible;
 
-            DateTime alarmTime = new DateTime();
-            alarmTime.Add(timePicker.Time);
-            alarmHandler.setNewAlarmTime(timePicker.Time.ToString());
+            DateTime dt = DateTime.Parse(timePicker.Time.ToString());
+            alarmHandler.setNewAlarm(dt);
+
+            BackgroundMediaPlayer.Current.SetUriSource(new Uri("ms-winsoundevent:Notification.Looping.Alarm10"));
+            BackgroundMediaPlayer.Current.Pause();
+
         }
     }
 }
