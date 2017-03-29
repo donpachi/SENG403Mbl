@@ -25,6 +25,12 @@ namespace SENG403Mobile
         public MainPage()
         {
             this.InitializeComponent();
+            Clock.UpdateTimeEvent += UpdateTimeLabel;
+        }
+
+        private void UpdateTimeLabel(object sender, String args)
+        {
+
         }
     }
 }
