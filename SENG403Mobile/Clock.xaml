@@ -13,7 +13,6 @@
             <Image x:Name="clock_canvas_image" Height="150" Width="150" Source="Assets/clock_canvas.png"/>
             <Image x:Name="hour_hand_image" Height="32"  Width="1.835" Canvas.Left="74" Canvas.Top="43" Source="Assets/hour_hand.png"/>
             <Image x:Name="minute_hand_image" Height="49.5"  Width="1.835" Canvas.Left="74" Canvas.Top="25.5" Source="Assets/minute_hand.png"/>
-            <Image x:Name="second_hand_image" Height="73"  Width="1" Canvas.Left="74.35" Canvas.Top="2" Source="Assets/second_hand.png"/>
             <Image x:Name="center_pin_image" Height ="5" Width="5" Canvas.Left="72.5" Canvas.Top="72.5"  Source="Assets/center_pin.png"/>
 
         </Canvas>

@@ -44,7 +44,7 @@ namespace SENG403Mobile
         public double MinuteOffset { get { return minuteOffset; } set { minuteOffset = value; } }
         public double degreeInterval;
         DispatcherTimer dTimer;
-        private double secondDegrees, minuteDegrees, hourDegrees, requestedMinuteAngle, requestedHourAngle;
+        private double secondDegrees, minuteDegrees, hourDegrees;
         private double currHour, currMin, currSec;
         private string date, timestring, meridiem;
         Boolean animateClock;
@@ -56,10 +56,9 @@ namespace SENG403Mobile
         public Clock()
         {
             this.InitializeComponent();
-            degreeInterval = (double)(CONSTANTS.DEG_PER_SEC * CONSTANTS.TICK_INTERVAL_MS) / CONSTANTS.MS_IN_SEC;
             dTimer = new DispatcherTimer();
             dTimer.Tick += DTimer_Tick;
-            dTimer.Interval = new TimeSpan(0, 0, 0, 0, CONSTANTS.TICK_INTERVAL_MS);
+            dTimer.Interval = new TimeSpan(0, 0, 0, 1);
             animateClock = true;
             UpdateTime();
             UpdateTimeLabel();
@@ -95,24 +94,13 @@ namespace SENG403Mobile
 
         private void ComputeAngles()
         {
-            secondDegrees = currSec * CONSTANTS.DEG_PER_SEC;
             minuteDegrees = (currMin * CONSTANTS.DEG_PER_SEC) + (currSec / CONSTANTS.SEC_IN_MIN) * 6;
             hourDegrees = (currHour * CONSTANTS.DEG_PER_HOUR) + (currMin / CONSTANTS.MIN_IN_HR) * 30;
         }
 
         private void RenderAngles(RenderMode renderMode)
         {
-            if (renderMode == RenderMode.RenderSecond)
-            {
-                RotateTransform transform = new RotateTransform();
-                transform.Angle = secondDegrees;
-                transform.CenterX = second_hand_image.Width / 2;
-                transform.CenterY = second_hand_image.Height;
-                secondDegrees = (secondDegrees + degreeInterval) >= 360 ? 0 : secondDegrees + degreeInterval;
-                second_hand_image.RenderTransform = transform;
-            }
-
-            else if (renderMode == RenderMode.RenderMinutes)
+            if (renderMode == RenderMode.RenderMinutes)
             {
                 RotateTransform transform = new RotateTransform();
                 transform.Angle = minuteDegrees;
@@ -131,23 +119,16 @@ namespace SENG403Mobile
             else if (renderMode == RenderMode.RenderAll)
             {
                 RotateTransform transform = new RotateTransform();
-                transform.Angle = secondDegrees;
-                transform.CenterX = second_hand_image.Width / 2;
-                transform.CenterY = second_hand_image.Height;
-                secondDegrees = (secondDegrees + degreeInterval) >= 360 ? 0 : secondDegrees + degreeInterval;
-                second_hand_image.RenderTransform = transform;
-
-                transform = new RotateTransform();
                 transform.Angle = minuteDegrees;
                 transform.CenterX = minute_hand_image.Width / 2;
                 transform.CenterY = minute_hand_image.Height;
                 minute_hand_image.RenderTransform = transform;
 
-                transform = new RotateTransform();
-                transform.Angle = hourDegrees;
-                transform.CenterX = hour_hand_image.Width / 2;
-                transform.CenterY = hour_hand_image.Height;
-                hour_hand_image.RenderTransform = transform;
+                RotateTransform hourtransform = new RotateTransform();
+                hourtransform.Angle = hourDegrees;
+                hourtransform.CenterX = hour_hand_image.Width / 2;
+                hourtransform.CenterY = hour_hand_image.Height;
+                hour_hand_image.RenderTransform = hourtransform;
             }
             else throw new NotImplementedException("Unexpected analog clock render mode");
         }
@@ -156,31 +137,17 @@ namespace SENG403Mobile
         {
             if (animateClock)
             {
-                RenderAngles(RenderMode.RenderSecond);
-                if (secondDegrees % CONSTANTS.DEG_PER_SEC == 0)
-                {    //every second update
-                    UpdateTime();
-                    ComputeAngles();
-                    RenderAngles(RenderMode.RenderMinutes);
-                    UpdateTimeLabel();
-                    FireUpdateTime(GetDate());
-                }
-                if (minuteDegrees % CONSTANTS.DEG_PER_HOUR == 0)
-                {   //every minute update
-                    RenderAngles(RenderMode.RenderHour);
-                }
+                UpdateTime();
+                ComputeAngles();
+                RenderAngles(RenderMode.RenderAll);
+                UpdateTimeLabel();
+                FireUpdateTime(GetDate());
+                //currSec = currSec + 1 >= 60 ? 0 : currSec + 1;
+                //if (minuteDegrees % CONSTANTS.DEG_PER_HOUR == 0)
+                //{   //every minute update
+                //    currMin = currMin + 1 >= 60 ? 0 : currMin + 1;
+                //}
             }
-        }
-
-        private double CalculateAngle(Point dst, Point src)
-        {
-            double angle = Math.Atan((dst.Y - src.Y) / (dst.X - src.X));
-            angle = angle * 180 / Math.PI;
-            if (dst.X < src.X)
-            {
-                angle += 180;
-            }
-            return angle += 90; //translate to clock-oriented degrees (0 at the top)
         }
 
         private void UpdateTimeLabel()
