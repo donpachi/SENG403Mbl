@@ -1,15 +1,19 @@
 ﻿
 using System;
 using System.IO;
+using System.Threading.Tasks;
+using Windows.Media.Core;
 using Windows.Media.Playback;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
-namespace SENG403
+namespace SENG403Mobile
 {
+
     public class SoundModule
     {
-        MediaElement sound;
+
+        //MediaPlayer mediaPlayer = new MediaPlayer();
         private Boolean playing = false;    //true when sound is looping, false when not.
         string[] availableSounds;           //array to hold the filepath of .wav files in the Sounds folder
         public string currentSound;                //the sound that is currently set to play on this SoundModule
@@ -23,44 +27,34 @@ namespace SENG403
             currentSound = "Sounds\\squarearp1.wav";        //default sound
         }
 
+
+        public async Task playSound()
+        {/*
+            Windows.Storage.StorageFolder folder = await Windows.ApplicationModel.Package.Current.InstalledLocation.GetFolderAsync(@"Sounds");
+            Windows.Storage.StorageFile file = await folder.GetFileAsync(currentSound);
+            mediaPlayer.AutoPlay = false;
+            mediaPlayer.Source = MediaSource.CreateFromStorageFile(file);
+
+            mediaPlayer.MediaOpened += soundOpened;
+
+            mediaPlayer.IsLoopingEnabled = true;
+            */
+        }
+
+
+        private void soundOpened(MediaPlayer sender, object args)
+        {
+            sender.Play();
+        }
+
+
         //set the sound that is to be played by this SoundModule
         public void setSound(string soundPath)
         {
             currentSound = soundPath;
         }
 
-        // Makes the SoundPlayer start looping a sound.
-        // Its one parameter is the filepath of the desiried .wav file as a string.
-        // *** Usage: use setSound(the sound's filepath) before calling playSound()
-        // otherwise can use getSound(index) for the parameter of this method.
-        public void playSound()
-        {
-            try
-            {
-                sound = new MediaElement();
-                sound.Source = new Uri(currentSound);
-                playing = true;
-                while (playing)
-                {
-                    sound.Play();
-                    if (sound.CurrentState.Equals(Windows.UI.Xaml.Media.MediaElementState.Stopped)){
-                        sound.
-                    }
-;                }
-            }
-            catch (FileNotFoundException)
-            {
-                System.Diagnostics.Debug.WriteLine("Error: sound file not found");
-            }
-        }
 
-
-        // makes the SoundPlayer stop playing a sound.
-        public void stopSound()
-        {
-            sound.Stop();
-            playing = false;
-        }
 
 
         // Returns whether or not a sound is playing right now.
