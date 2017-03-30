@@ -25,6 +25,8 @@ namespace SENG403Mobile
     public sealed partial class MainPage : Page
     {
         AlarmHandler alarmHandler;
+        private bool setToggle = false;
+
         public MainPage()
         {
             
@@ -75,13 +77,6 @@ namespace SENG403Mobile
             alarmHandler.currentAlarm = null;
         }
 
-        private void setClicked(object sender, RoutedEventArgs e)
-        {
-            setAlarm.Visibility = Visibility.Collapsed;
-            timePicker.Visibility = Visibility.Visible;
-            confirmAlarm.Visibility = Visibility.Visible;
-        }
-
         private void confirmClicked(object sender, RoutedEventArgs e)
         {
             confirmAlarm.Visibility = Visibility.Collapsed;
@@ -94,6 +89,21 @@ namespace SENG403Mobile
             BackgroundMediaPlayer.Current.SetUriSource(new Uri("ms-winsoundevent:Notification.Looping.Alarm10"));
             BackgroundMediaPlayer.Current.Pause();
 
+        }
+
+        private void setChecked(object sender, RoutedEventArgs e)
+        {
+            setalarmcanvas.Visibility = Visibility.Visible;
+        }
+
+        private void setUnchecked(object sender, RoutedEventArgs e)
+        {
+            setalarmcanvas.Visibility = Visibility.Collapsed;
+        }
+
+        private void cancelClicked(object sender, RoutedEventArgs e)
+        {
+            setalarmcanvas.Visibility = Visibility.Collapsed;
         }
     }
 }
