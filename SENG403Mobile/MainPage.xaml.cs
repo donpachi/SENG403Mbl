@@ -79,9 +79,8 @@ namespace SENG403Mobile
 
         private void confirmClicked(object sender, RoutedEventArgs e)
         {
-            confirmAlarm.Visibility = Visibility.Collapsed;
-            timePicker.Visibility = Visibility.Collapsed;
-            setAlarm.Visibility = Visibility.Visible;
+            setalarmcanvas.Visibility = Visibility.Collapsed;
+            setAlarm.IsChecked = false;
 
             DateTime dt = DateTime.Parse(timePicker.Time.ToString());
             alarmHandler.setNewAlarm(dt);
@@ -104,6 +103,7 @@ namespace SENG403Mobile
         private void cancelClicked(object sender, RoutedEventArgs e)
         {
             setalarmcanvas.Visibility = Visibility.Collapsed;
+            setAlarm.IsChecked = false;
         }
     }
 }
