@@ -6,10 +6,22 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    d:DesignHeight="150"
+    d:DesignHeight="70"
     d:DesignWidth="300">
 
-    <Canvas Height="150" Width="300">
-        
+    <Canvas Height="70" Width="300">
+        <Canvas x:Name="digital_canvas" Width="105" Height="52" Canvas.Left="10" Canvas.Top="10">
+            <TextBlock x:Name="hour_text" FontSize="60" Canvas.Top="-18" Foreground="#D8FFFFFF" TextAlignment="Center" Text="01" FontWeight="Light" Canvas.Left="3" Height="68"/>
+            <TextBlock x:Name="alarm_min_text" Text="23" FontSize="35" Foreground="#D8FFFFFF" Canvas.Left="61" FontWeight="Light" Height="46" Canvas.Top="-8"/>
+        </Canvas>
+        <Canvas x:Name="alarm_days" Canvas.Left="120" Canvas.Top="6" Width="172" Height="67">
+            <Button x:Name="alarm_days_mon" Content="M" Width="30" Height="30" Background="Transparent" Padding="0" FontSize="22" Foreground="White" BorderThickness="0"/>
+            <Button x:Name="alarm_days_tue" Content="T" Width="30" Height="30" Background="Transparent" Padding="0" FontSize="22" Foreground="White" BorderThickness="0" Canvas.Left="35"/>
+            <Button x:Name="alarm_days_wed" Content="W" Width="30" Height="30" Background="Transparent" Padding="0" FontSize="22" Foreground="White" BorderThickness="0" Canvas.Left="70"/>
+            <Button x:Name="alarm_days_thu" Content="R" Width="30" Height="30" Background="Transparent" Padding="0" FontSize="22" Foreground="White" BorderThickness="0" Canvas.Left="105"/>
+            <Button x:Name="alarm_days_fri" Content="F" Width="30" Height="30" Background="Transparent" Padding="0" FontSize="22" Foreground="White" BorderThickness="0" Canvas.Left="140"/>
+            <Button x:Name="alarm_days_sat" Content="S" Width="30" Height="30" Background="Transparent" Padding="0" FontSize="22" Foreground="White" BorderThickness="0" Canvas.Left="35" Canvas.Top="30"/>
+            <Button x:Name="alarm_days_sun" Content="S" Width="30" Height="30" Background="Transparent" Padding="0" FontSize="22" Foreground="Red" BorderThickness="0" Canvas.Left="105" Canvas.Top="30"/>
+        </Canvas>
     </Canvas>
 </UserControl>

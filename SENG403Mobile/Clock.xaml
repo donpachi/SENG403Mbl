@@ -9,11 +9,11 @@
     d:DesignHeight="325"
     d:DesignWidth="190">
     <Canvas>
-        <Canvas x:Name="analog_canvas" Width="150" Height="150" Canvas.Left="20" Canvas.Top="20">
-            <Image x:Name="clock_canvas_image" Height="150" Width="150" Source="Assets/clock_canvas.png"/>
-            <Image x:Name="hour_hand_image" Height="32"  Width="1.835" Canvas.Left="74" Canvas.Top="43" Source="Assets/hour_hand.png"/>
-            <Image x:Name="minute_hand_image" Height="49.5"  Width="1.835" Canvas.Left="74" Canvas.Top="25.5" Source="Assets/minute_hand.png"/>
-            <Image x:Name="center_pin_image" Height ="5" Width="5" Canvas.Left="72.5" Canvas.Top="72.5"  Source="Assets/center_pin.png"/>
+        <Canvas x:Name="analog_canvas" Width="190" Height="190">
+            <Image x:Name="clock_canvas_image" Height="190" Width="190" Source="Assets/clock_canvas.png"/>
+            <Image x:Name="hour_hand_image" Height="58"  Width="3.33" Canvas.Left="93.335" Canvas.Top="37" Source="Assets/hour_hand.png"/>
+            <Image x:Name="minute_hand_image" Height="90"  Width="3.33" Canvas.Left="93.335" Canvas.Top="5" Source="Assets/minute_hand.png"/>
+            <Image x:Name="center_pin_image" Height ="7.5" Width="7.5" Canvas.Left="91.25" Canvas.Top="91.25"  Source="Assets/center_pin.png"/>
 
         </Canvas>
         <Canvas x:Name="digital_canvas" Width="150" Height="150" Canvas.Top="175" Canvas.Left="22">
