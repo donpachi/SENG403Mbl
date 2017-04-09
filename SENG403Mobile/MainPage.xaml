@@ -8,7 +8,8 @@
     mc:Ignorable="d">
     <Canvas>
         <Canvas.Background>
-            <SolidColorBrush Color="#FF2C0010"/>
+            <!-- #FFA1F0F0 -->
+            <SolidColorBrush Color="#FF779E82"/>
         </Canvas.Background>
         <Canvas x:Name="main_time_canvas">
             <Canvas x:Name="clock_canvas" HorizontalAlignment="Center" VerticalAlignment="Center" Canvas.Left="85" Canvas.Top="30" >
@@ -31,7 +32,7 @@
             <Button x:Name="showAlarm" Background="Transparent" Canvas.Left="125" Canvas.Top="580" Height="50" Width="50" Visibility="Visible">
                 <Image Source="Assets/alarm_icon.png"/>
             </Button>
-            <Canvas x:Name="upcoming_alarm" Height="70" Width="300" Canvas.Left="30" Canvas.Top="350">
+            <Canvas x:Name="upcoming_alarm" Height="70" Width="300" Canvas.Left="30" Canvas.Top="400">
                 <local:AlarmContainer x:Name="upcoming_alarm_panel"/>
             </Canvas>
         </Canvas>

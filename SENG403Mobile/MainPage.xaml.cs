@@ -25,7 +25,6 @@ namespace SENG403Mobile
     public sealed partial class MainPage : Page
     {
         AlarmHandler alarmHandler;
-        private bool setToggle = false;
 
         public MainPage()
         {

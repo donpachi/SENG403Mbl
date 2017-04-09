@@ -44,7 +44,7 @@ namespace SENG403Mobile
         public double MinuteOffset { get { return minuteOffset; } set { minuteOffset = value; } }
         public double degreeInterval;
         DispatcherTimer dTimer;
-        private double secondDegrees, minuteDegrees, hourDegrees;
+        private double minuteDegrees, hourDegrees;
         private double currHour, currMin, currSec;
         private string date, timestring, meridiem;
         Boolean animateClock;
