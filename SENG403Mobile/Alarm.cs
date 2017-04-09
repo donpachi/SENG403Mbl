@@ -109,24 +109,23 @@ namespace SENG403Mobile
             // If so, set the alarm to ring
             foreach (Alarm alarm in alarmList)
             {
-                // If the current time is one of the alarms, then check if the day is also correct
-                //if (time.Equals(alarm.getTime()))
-                // If the current time is one of the alarms, then check if the day is also correct
-                if (alarm.getDays() == "0000000" || alarm.getDays()[day].Equals('1'))
+                if (Clock.Now().ToString("T").Equals(alarm.getDateTime().ToString("T")))
                 {
-                    if (currentAlarm != null)
+                    System.Diagnostics.Debug.WriteLine(alarm.getDateTime().ToString("T"));
+
+                    // If the current time is one of the alarms, then check if the day is also correct
+                    if (alarm.getDays() == "0000000" || alarm.getDays()[day].Equals('1'))
                     {
-                        currentAlarm.setRinging(false);
+                        if (currentAlarm != null)
+                        {
+                            currentAlarm.setRinging(false);
+                        }
+
+                        // Play the alarm and set the current alarm to this alarm
+                        currentAlarm = alarm;
+                        currentAlarm.setRinging(true);
                     }
-
-                    // Play the alarm and set the current alarm to this alarm
-                    currentAlarm = alarm;
-                    currentAlarm.setRinging(true);
                 }
-
-
-
-
                 //if (time == alarm.getDateTime().ToString("HH:mm:ss"))
                 //{
 

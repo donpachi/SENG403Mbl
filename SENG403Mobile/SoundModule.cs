@@ -40,7 +40,6 @@ namespace SENG403Mobile
                 player.Source = MediaSource.CreateFromUri(new Uri("ms-appx:///"+currentSound));
                 player.Play();                       //loops the selected sound until stopSound() is called
                 playing = true;
-                System.Diagnostics.Debug.WriteLine("SHOULD PLAY?");
             }
             catch (FileNotFoundException)
             {

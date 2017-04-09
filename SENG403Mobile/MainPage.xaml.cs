@@ -27,7 +27,6 @@ namespace SENG403Mobile
     {
         AlarmHandler alarmHandler;
         private bool setToggle = false;
-        SoundModule sound = new SoundModule();
 
         public MainPage()
         {
@@ -40,6 +39,7 @@ namespace SENG403Mobile
             // DateTime.Now.Date.ToString;
 
             // populate with sounds
+            SoundModule sound = new SoundModule();
             string[] availableSounds = sound.getSounds();
             for (int i = 0; i < availableSounds.Length; i++)
             {
@@ -90,8 +90,11 @@ namespace SENG403Mobile
 
             SoundModule newSound = new SoundModule();
 
+            Alarm[] alarmList = alarmHandler.getAlarms(); // This holds all the alarms that have been set
+
             // string which holds 0 or 1 for each day of the week (Sunday = 0th, Monday = 1th, ..., Saturday = 6th)
-            string alarmDaysChecked = "1111111";
+            // TODO: Need to set the appropriate days as '1', everything else should work after that
+            string alarmDaysChecked = "0000000";
 
             //// Build days string before creating alarm - need to update for button implementation instead
 
