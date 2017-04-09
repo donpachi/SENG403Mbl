@@ -108,6 +108,7 @@
     </Compile>
     <Compile Include="MissedAlarmHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SoundModule.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

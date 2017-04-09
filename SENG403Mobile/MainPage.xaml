@@ -16,7 +16,7 @@
                 <Button x:Name="buttonDismissAlarm" Content="Dismiss" Canvas.Left="-52"  Width="300" Height="100" Canvas.Top="320" FontSize="24" Visibility="Collapsed" Background="#33FFFFFF" Click="clickDismiss"/>
                 <Button x:Name="buttonSnoozeAlarm" Content="Snooze" Canvas.Left="-52"  Width="300" Height="100" Canvas.Top="425" FontSize="24" Visibility="Collapsed" Background="#33FFFFFF" Click="clickSnooze"/>
             </Canvas>
-            <Canvas x:Name="setalarmcanvas"  Width="320" Height="100" Canvas.Left="20" Canvas.Top="460" Visibility="Collapsed">
+            <Canvas x:Name="setalarmcanvas"  Width="320" Height="100" Canvas.Left="20" Canvas.Top="460" Visibility="Visible">
                 <TimePicker x:Name="timePicker" Canvas.Top="57" Canvas.Left="10"/>
                 <Button x:Name="confirmAlarm" Canvas.Left="257" Canvas.Top="62.5" Height="20" Width="20" Background="Transparent" Click="confirmClicked" Padding="0" BorderThickness="0">
                     <Image Source="Assets/confirm_circle.png"/>
@@ -24,6 +24,7 @@
                 <Button x:Name="cancelAlarm" Canvas.Left="285" Canvas.Top="62.5" Height="20" Width="20" Background="Transparent" Padding="0" BorderThickness="0" Click="cancelClicked">
                     <Image Source="Assets/x_icon.png" />
                 </Button>
+                <ComboBox x:Name="comboBoxSounds" Canvas.Left="10" Canvas.Top="10" Width="242"/>
             </Canvas>
             <ToggleButton x:Name="setAlarm" Background="Transparent"  Canvas.Left="175" Canvas.Top="580" Height="50" Width="50" Visibility="Visible" Checked="setChecked" Unchecked="setUnchecked">
                 <Image Source="Assets/add_alarm_icon.png"/>
@@ -32,11 +33,23 @@
                 <Image Source="Assets/alarm_icon.png"/>
             </Button>
             <Canvas x:Name="upcoming_alarm" Height="70" Width="300" Canvas.Left="30" Canvas.Top="350">
-                <local:AlarmContainer x:Name="upcoming_alarm_panel"/>
+                <Canvas x:Name="digital_canvas" Width="105" Height="52" Canvas.Left="10" Canvas.Top="10">
+                    <TextBlock x:Name="hour_text" FontSize="60" Canvas.Top="-18" Foreground="#D8FFFFFF" TextAlignment="Center" Text="01" FontWeight="Light" Canvas.Left="3" Height="68"/>
+                    <TextBlock x:Name="alarm_min_text" Text="23" FontSize="35" Foreground="#D8FFFFFF" Canvas.Left="61" FontWeight="Light" Height="46" Canvas.Top="-8"/>
+                </Canvas>
+                <Canvas x:Name="alarm_days" Canvas.Left="120" Canvas.Top="6" Width="172" Height="67">
+                    <Button x:Name="alarm_days_mon" Content="M" Width="30" Height="30" Background="Transparent" Padding="0" FontSize="22" Foreground="White" BorderThickness="0" Click="mondayClicked"/>
+                    <Button x:Name="alarm_days_tue" Content="T" Width="30" Height="30" Background="Transparent" Padding="0" FontSize="22" Foreground="White" BorderThickness="0" Canvas.Left="35" Click="tuesdayClicked"/>
+                    <Button x:Name="alarm_days_wed" Content="W" Width="30" Height="30" Background="Transparent" Padding="0" FontSize="22" Foreground="White" BorderThickness="0" Canvas.Left="70" Click="wednesdayClicked"/>
+                    <Button x:Name="alarm_days_thu" Content="R" Width="30" Height="30" Background="Transparent" Padding="0" FontSize="22" Foreground="White" BorderThickness="0" Canvas.Left="105" Click="thursdayClicked"/>
+                    <Button x:Name="alarm_days_fri" Content="F" Width="30" Height="30" Background="Transparent" Padding="0" FontSize="22" Foreground="White" BorderThickness="0" Canvas.Left="140" Click="fridayClicked"/>
+                    <Button x:Name="alarm_days_sat" Content="S" Width="30" Height="30" Background="Transparent" Padding="0" FontSize="22" Foreground="White" BorderThickness="0" Canvas.Left="35" Canvas.Top="30" Click="saturdayClicked"/>
+                    <Button x:Name="alarm_days_sun" Content="S" Width="30" Height="30" Background="Transparent" Padding="0" FontSize="22" Foreground="Red" BorderThickness="0" Canvas.Left="105" Canvas.Top="30" Click="sundayClicked"/>
+                </Canvas>
             </Canvas>
         </Canvas>
         <Canvas x:Name="main_alarm_canvas">
-            
+
         </Canvas>
     </Canvas>
 </Page>
