@@ -25,6 +25,7 @@
                 <Button x:Name="cancelAlarm" Canvas.Left="285" Canvas.Top="62.5" Height="20" Width="20" Background="Transparent" Padding="0" BorderThickness="0" Click="cancelClicked">
                     <Image Source="Assets/x_icon.png" />
                 </Button>
+                <ComboBox x:Name="comboBoxSounds" Canvas.Left="10" Canvas.Top="10" Width="242"/>
             </Canvas>
             <ToggleButton x:Name="setAlarm" Background="Transparent"  Canvas.Left="175" Canvas.Top="580" Height="50" Width="50" Visibility="Visible" Checked="setChecked" Unchecked="setUnchecked">
                 <Image Source="Assets/add_alarm_icon.png"/>
@@ -37,7 +38,7 @@
             </Canvas>
         </Canvas>
         <Canvas x:Name="main_alarm_canvas">
-            
+
         </Canvas>
     </Canvas>
 </Page>
