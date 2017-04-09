@@ -27,22 +27,12 @@ namespace SENG403Mobile
     {
         AlarmHandler alarmHandler;
         private bool setToggle = false;
-        Boolean sunday = false;
-        Boolean monday = false;
-        Boolean tuesday = false;
-        Boolean wednesday = false;
-        Boolean thursday = false;
-        Boolean friday = false;
-        Boolean saturday = false;
         SoundModule sound = new SoundModule();
 
         public MainPage()
         {
             
             this.InitializeComponent();
-            BackgroundMediaPlayer.Current.SetUriSource(new Uri("ms-winsoundevent:Notification.Looping.Alarm10"));
-            BackgroundMediaPlayer.Current.IsLoopingEnabled = true;
-            BackgroundMediaPlayer.Current.Pause();
             Clock.UpdateTimeEvent += UpdateTimeLabel;
             //Dateblock.Text = DateTime.Now.DayOfWeek.ToString();//DateTime.Now.ToString();
             alarmHandler = new AlarmHandler();
@@ -65,7 +55,6 @@ namespace SENG403Mobile
 
         private void OnAlarmRing()
         {
-            BackgroundMediaPlayer.Current.Play();
             buttonDismissAlarm.Visibility = Visibility.Visible;
             buttonSnoozeAlarm.Visibility = Visibility.Visible;
             setAlarm.Visibility = Visibility.Collapsed;
@@ -75,19 +64,23 @@ namespace SENG403Mobile
 
         private void clickSnooze(object sender, RoutedEventArgs e)
         {
+            alarmHandler.getCurrentAlarm().snooze(1);
+            alarmHandler.currentAlarm = null;
             buttonDismissAlarm.Visibility = Visibility.Collapsed;
             buttonSnoozeAlarm.Visibility = Visibility.Collapsed;
             setAlarm.Visibility = Visibility.Visible;
-            alarmHandler.currentAlarm.snooze(1);
         }
 
         private void clickDismiss(object sender, RoutedEventArgs e)
         {
+            Alarm ringingAlarm = alarmHandler.getCurrentAlarm();
+            ringingAlarm.setRinging(false);
+            alarmHandler.endAlarm(ringingAlarm);
+            alarmHandler.currentAlarm = null;
+
             buttonDismissAlarm.Visibility = Visibility.Collapsed;
             buttonSnoozeAlarm.Visibility = Visibility.Collapsed;
-            BackgroundMediaPlayer.Current.Pause();
             setAlarm.Visibility = Visibility.Visible;
-            alarmHandler.currentAlarm = null;
         }
 
         private void confirmClicked(object sender, RoutedEventArgs e)
@@ -98,9 +91,10 @@ namespace SENG403Mobile
             SoundModule newSound = new SoundModule();
 
             // string which holds 0 or 1 for each day of the week (Sunday = 0th, Monday = 1th, ..., Saturday = 6th)
-            string alarmDaysChecked = "";
+            string alarmDaysChecked = "1111111";
 
-            //// Build days string before creating alarm
+            //// Build days string before creating alarm - need to update for button implementation instead
+
             //if (checkBox_Sunday.IsChecked == true) { alarmDaysChecked += "1"; }
             //else { alarmDaysChecked += "0"; }
 
@@ -126,15 +120,7 @@ namespace SENG403Mobile
             newSound.setSound(selectedSound);
 
             DateTime dt = DateTime.Parse(timePicker.Time.ToString());
-            alarmHandler.setNewAlarm(dt, alarmDaysChecked, newSound);
-
-            //MediaPlayer mediaPlayer = new MediaPlayer();
-            //mediaPlayer.Source = MediaSource.CreateFromUri(new Uri("ms-winsoundevent:Notification.Looping.Alarm10"));
-            //mediaPlayer.Play();
-
-                //BackgroundMediaPlayer.Current.SetUriSource(new Uri("ms-winsoundevent:Notification.Looping.Alarm10"));
-                //BackgroundMediaPlayer.Current.Pause();
-            
+            alarmHandler.setNewAlarm(dt, alarmDaysChecked, newSound);       
         }
 
         private void setChecked(object sender, RoutedEventArgs e)
@@ -152,50 +138,6 @@ namespace SENG403Mobile
         {
             setalarmcanvas.Visibility = Visibility.Collapsed;
             setAlarm.IsChecked = false;
-        }
-
-        private void mondayClicked(object sender, RoutedEventArgs e)
-        {
-            if (!monday)
-            {
-                monday = true;
-                alarm_days_mon.Foreground = new SolidColorBrush(Colors.Red);
-            }
-            else
-            {
-                monday = false;
-                alarm_days_mon.Foreground = new SolidColorBrush(Colors.White);
-            }
-        }
-
-        private void tuesdayClicked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void wednesdayClicked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void thursdayClicked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void fridayClicked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void saturdayClicked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void sundayClicked(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

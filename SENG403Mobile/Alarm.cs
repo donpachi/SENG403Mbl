@@ -112,20 +112,29 @@ namespace SENG403Mobile
                 // If the current time is one of the alarms, then check if the day is also correct
                 //if (time.Equals(alarm.getTime()))
                 // If the current time is one of the alarms, then check if the day is also correct
-                if (Clock.Now().ToString("T").Equals(alarm.getDateTime().ToString()))
+                if (alarm.getDays() == "0000000" || alarm.getDays()[day].Equals('1'))
                 {
-                    if (alarm.getDays() == "0000000" || alarm.getDays()[day].Equals('1'))
+                    if (currentAlarm != null)
                     {
-                        if (currentAlarm != null)
-                        {
-                            currentAlarm.setRinging(false);
-                        }
-
-                        // Play the alarm and set the current alarm to this alarm
-                        currentAlarm = alarm;
-                        currentAlarm.setRinging(true);
+                        currentAlarm.setRinging(false);
                     }
+
+                    // Play the alarm and set the current alarm to this alarm
+                    currentAlarm = alarm;
+                    currentAlarm.setRinging(true);
                 }
+
+
+
+
+                //if (time == alarm.getDateTime().ToString("HH:mm:ss"))
+                //{
+
+                //    // Play the alarm and set the current alarm to this alarm
+                //    currentAlarm = alarm;
+                //    currentAlarm.setRinging(true);
+                //    //BackgroundMediaPlayer.Current.Play();
+                //}
                 //if (time == alarm.getDateTime().ToString("HH:mm:ss"))
                 //{
 
