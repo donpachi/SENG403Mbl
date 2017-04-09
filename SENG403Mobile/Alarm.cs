@@ -111,14 +111,29 @@ namespace SENG403Mobile
             {
                 // If the current time is one of the alarms, then check if the day is also correct
                 //if (time.Equals(alarm.getTime()))
-                if (time == alarm.getDateTime().ToString("HH:mm:ss"))
+                // If the current time is one of the alarms, then check if the day is also correct
+                if (Clock.Now().ToString("T").Equals(alarm.getDateTime().ToString()))
                 {
+                    if (alarm.getDays() == "0000000" || alarm.getDays()[day].Equals('1'))
+                    {
+                        if (currentAlarm != null)
+                        {
+                            currentAlarm.setRinging(false);
+                        }
 
-                    // Play the alarm and set the current alarm to this alarm
-                    currentAlarm = alarm;
-                    currentAlarm.setRinging(true);
-                    //BackgroundMediaPlayer.Current.Play();
+                        // Play the alarm and set the current alarm to this alarm
+                        currentAlarm = alarm;
+                        currentAlarm.setRinging(true);
+                    }
                 }
+                //if (time == alarm.getDateTime().ToString("HH:mm:ss"))
+                //{
+
+                //    // Play the alarm and set the current alarm to this alarm
+                //    currentAlarm = alarm;
+                //    currentAlarm.setRinging(true);
+                //    //BackgroundMediaPlayer.Current.Play();
+                //}
             }
         }
         
@@ -129,10 +144,10 @@ namespace SENG403Mobile
         /// <param name="time">The time the alarm is set to trigger on</param>
         /// <param name="days">The days the alarm is set to trigger on</param>
         /// <param name="alarmSound">The alarm sound set to play once the alarm goes off.</param>
-        public void setNewAlarm(DateTime time)
+        public void setNewAlarm(DateTime time, String days, SoundModule soundFile)
         {
             // Create a new alarm and append it to the alarmList
-            alarmList.Add(new Alarm(time));
+            alarmList.Add(new Alarm(time, days, soundFile));
         }
 
         /// <summary>
@@ -186,6 +201,7 @@ namespace SENG403Mobile
         Boolean repeat = false;
         bool currentlyRinging;
         String message;
+        SoundModule alarmSound;
 
         public delegate void AlarmEvent();
         public static event AlarmEvent onRing;
@@ -200,11 +216,12 @@ namespace SENG403Mobile
         }
 
         // Alarm constructor
-        public Alarm(DateTime time)
+        public Alarm(DateTime time, String days, SoundModule alarmSound)
         {
             this.time = time;
             this.settime = time;
             this.days = days;
+            this.alarmSound = alarmSound;
             if (message != "")
             {
                 this.message = message;
@@ -245,7 +262,8 @@ namespace SENG403Mobile
         public void snooze(Double minutes)
         {
             time = Clock.Now().AddMinutes(minutes);
-            BackgroundMediaPlayer.Current.Pause();
+            //BackgroundMediaPlayer.Current.Pause();
+            alarmSound.stopSound();
         }
 
         /// <summary>
@@ -268,12 +286,19 @@ namespace SENG403Mobile
             this.currentlyRinging = val;
             if (val == true)
             {
-                BackgroundMediaPlayer.Current.Play();
+                //BackgroundMediaPlayer.Current.Play();
+                alarmSound.playSound();
                 AlarmRinging();
             }
             else {
-                BackgroundMediaPlayer.Current.Pause();
+                //BackgroundMediaPlayer.Current.Pause();
+                alarmSound.stopSound();
             }
+        }
+
+        public String getSound()
+        {
+            return this.alarmSound.currentSound;
         }
 
         /// <summary>
