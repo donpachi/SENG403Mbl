@@ -248,6 +248,13 @@ namespace SENG403Mobile
             message = msg;
         }
 
+        public void setDateTime(int hour, int minutes)
+        {
+            TimeSpan ts = new TimeSpan(hour, minutes, 0);
+            DateTime newTime = time.Date + ts;
+            time = newTime;
+        }
+
         /// <summary>
         /// Return the time this alarm is set to ring.
         /// </summary>
