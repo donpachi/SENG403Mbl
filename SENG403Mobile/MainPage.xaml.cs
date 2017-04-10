@@ -91,6 +91,9 @@ namespace SENG403Mobile
 
             Alarm[] alarmList = alarmHandler.getAlarms(); // This holds all the alarms that have been set
 
+            // Use alarm.setDateTime(int hour, int minutes) to set a new time for the alarm
+            // Use alarm.setDays(String days) to set new days for the alarm
+
             // string which holds 0 or 1 for each day of the week (Sunday = 0th, Monday = 1th, ..., Saturday = 6th)
             // TODO: Need to set the appropriate days as '1', everything else should work after that
             string alarmDaysChecked = "0000000";
