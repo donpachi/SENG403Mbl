@@ -135,9 +135,9 @@ namespace SENG403Mobile
 
         private void DTimer_Tick(object sender, object e)
         {
+            Tick();
             if (animateClock)
             {
-                UpdateTime();
                 ComputeAngles();
                 RenderAngles(RenderMode.RenderAll);
                 UpdateTimeLabel();
@@ -148,6 +148,23 @@ namespace SENG403Mobile
                 //    currMin = currMin + 1 >= 60 ? 0 : currMin + 1;
                 //}
             }
+        }
+
+        private void Tick()
+        {
+            if (currSec + 1 >= 60)
+            {
+                currSec = 0;
+                if (currMin + 1 >= 60)
+                {
+                    currMin = 0;
+                    UpdateTime();   //grab system time every hour
+                }
+                else
+                    currMin++;
+            }
+            else
+                currSec++;
         }
 
         private void UpdateTimeLabel()

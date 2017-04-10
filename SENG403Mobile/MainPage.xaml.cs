@@ -141,5 +141,10 @@ namespace SENG403Mobile
             setalarmcanvas.Visibility = Visibility.Collapsed;
             setAlarm.IsChecked = false;
         }
+
+        private void ShowAlarmsTapped(object sender, TappedRoutedEventArgs e)
+        {
+
+        }
     }
 }
