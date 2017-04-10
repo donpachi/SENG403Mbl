@@ -165,7 +165,7 @@ namespace SENG403Mobile
         /// <param name="m">Month</param>
         /// <param name="y">Year</param>
         /// <returns></returns>
-        private int dayofweek(int d, int m, int y)
+        public int dayofweek(int d, int m, int y)
         {
 
             // Determine the day of the week that the alarm is set to
@@ -262,6 +262,11 @@ namespace SENG403Mobile
         /// </summary>
         /// <returns>Days the alarm is ringing on.</returns>
         public String getDays() { return days; }
+
+        public void setDays(String days)
+        {
+            this.days = days;
+        }
 
         /// <summary>
         /// Snoozes (delays) the alarm by the amount of minutes input
