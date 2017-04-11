@@ -76,7 +76,7 @@ namespace SENG403Mobile
             ringingAlarm.setRinging(false);
             alarmHandler.endAlarm(ringingAlarm);
             alarmHandler.currentAlarm = null;
-
+            
             buttonDismissAlarm.Visibility = Visibility.Collapsed;
             buttonSnoozeAlarm.Visibility = Visibility.Collapsed;
             setAlarm.Visibility = Visibility.Visible;
@@ -145,9 +145,16 @@ namespace SENG403Mobile
             setAlarm.IsChecked = false;
         }
 
-        private void ShowAlarmsTapped(object sender, TappedRoutedEventArgs e)
+        private void ShowAlarmList(object sender, RoutedEventArgs e)
         {
+            main_time_canvas.Visibility = Visibility.Collapsed;
+            main_alarm_canvas.Visibility = Visibility.Visible;
+        }
 
+        private void ShowTime(object sender, RoutedEventArgs e)
+        {
+            main_time_canvas.Visibility = Visibility.Visible;
+            main_alarm_canvas.Visibility = Visibility.Collapsed;
         }
     }
 }

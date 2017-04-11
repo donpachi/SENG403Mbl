@@ -162,7 +162,7 @@ namespace SENG403Mobile
         private void UpdateAlarmDays()
         {
             string alarmDays = new string(daysChecked);
+            alarm.setDays(alarmDays);
         }
-
     }
 }

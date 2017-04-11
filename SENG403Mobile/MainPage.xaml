@@ -17,7 +17,8 @@
                 <Button x:Name="buttonDismissAlarm" Content="Dismiss" Canvas.Left="-52"  Width="300" Height="100" Canvas.Top="320" FontSize="24" Visibility="Collapsed" Background="#33FFFFFF" Click="clickDismiss"/>
                 <Button x:Name="buttonSnoozeAlarm" Content="Snooze" Canvas.Left="-52"  Width="300" Height="100" Canvas.Top="425" FontSize="24" Visibility="Collapsed" Background="#33FFFFFF" Click="clickSnooze"/>
             </Canvas>
-            <Canvas x:Name="setalarmcanvas"  Width="320" Height="100" Canvas.Left="20" Canvas.Top="460" Visibility="Collapsed">
+            <Canvas x:Name="setalarmcanvas"  Width="320" Height="100" Canvas.Left="20" Canvas.Top="460">
+                <!-- Visibility="Collapsed" -->
                 <TimePicker x:Name="timePicker" Canvas.Top="57" Canvas.Left="10"/>
                 <Button x:Name="confirmAlarm" Canvas.Left="257" Canvas.Top="62.5" Height="20" Width="20" Background="Transparent" Click="confirmClicked" Padding="0" BorderThickness="0">
                     <Image Source="Assets/confirm_circle.png"/>
@@ -30,15 +31,15 @@
             <ToggleButton x:Name="setAlarm" Background="Transparent"  Canvas.Left="175" Canvas.Top="580" Height="50" Width="50" Visibility="Visible" Checked="setChecked" Unchecked="setUnchecked">
                 <Image Source="Assets/add_alarm_icon.png"/>
             </ToggleButton>
-            <Button x:Name="showAlarm" Background="Transparent" Canvas.Left="125" Canvas.Top="580" Height="50" Width="50" Visibility="Visible" Tapped="ShowAlarmsTapped">
+            <ToggleButton x:Name="showAlarm" Background="Transparent" Canvas.Left="125" Canvas.Top="580" Height="50" Width="50" Visibility="Visible" Checked="ShowAlarmList" Unchecked="ShowTime">
                 <Image Source="Assets/alarm_icon.png"/>
-            </Button>
+            </ToggleButton>
             <Canvas x:Name="upcoming_alarm" Height="70" Width="300" Canvas.Left="30" Canvas.Top="400">
                 <local:AlarmContainer x:Name="upcoming_alarm_panel"/>
             </Canvas>
         </Canvas>
         <Canvas x:Name="main_alarm_canvas">
-
+            
         </Canvas>
     </Canvas>
 </Page>
