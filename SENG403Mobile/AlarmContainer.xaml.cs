@@ -193,12 +193,16 @@ namespace SENG403Mobile
 
         private void SetAlarmDays_UI()
         {
-            string[] days = alarm.getDays().Split();
-            foreach (int index in Enum.GetValues(typeof(DaysIndex)))
+            char[] days = alarm.getDays().ToCharArray();
+            for (int index = (int)DaysIndex.Sunday; index <= (int)DaysIndex.Saturday; index++)
             {
-                if (days[index] == "1")
+                if (days[index] == '1')
                 {
                     buttons[index].IsChecked = true;
+                }
+                else if (days[index] == '0')
+                {
+                    buttons[index].IsChecked = false;
                 }
             }
         }
@@ -224,6 +228,7 @@ namespace SENG403Mobile
             {
                 Placement = FlyoutPlacementMode.Full
             };
+            timeFlyout.Time = new TimeSpan(hour, min, 0);
             timeFlyout.TimePicked += TimeFlyout_TimePicked;
             timeFlyout.ShowAt(this);
         }
@@ -233,9 +238,9 @@ namespace SENG403Mobile
             TimeSpan pickedTime = args.NewTime;
             hour = pickedTime.Hours;
             min = pickedTime.Minutes;
-            alarm_hour_text.Text = pickedTime.Hours.ToString();
-            alarm_min_text.Text = pickedTime.Minutes.ToString();
-            alarm.setDateTime(pickedTime.Hours, pickedTime.Minutes);
+            alarm_hour_text.Text = pickedTime.Hours.ToString("D2");
+            alarm_min_text.Text = pickedTime.Minutes.ToString("D2");
+            //alarm.setDateTime(pickedTime.Hours, pickedTime.Minutes);
         }
 
         private void AlarmSettingsTap(object sender, TappedRoutedEventArgs e)
