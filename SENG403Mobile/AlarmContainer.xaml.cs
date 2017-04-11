@@ -21,14 +21,26 @@ namespace SENG403Mobile
     {
         private enum DaysIndex { Sunday = 0, Monday = 1, Tuesday = 2, Wednesday = 3, Thursday = 4, Friday = 5, Saturday = 6 }
 
+        int hour, min;
         Alarm alarm;
         List<ToggleButton> buttons = new List<ToggleButton>(7);
         char[] daysChecked = { '0', '0', '0', '0', '0', '0', '0' };
+        bool inSettings;
 
         public AlarmContainer()
         {
             this.InitializeComponent();
             InitButtonArray();
+            inSettings = false;
+        }
+
+        public AlarmContainer(DateTime dt)
+        {
+            TimeSpan ts = dt.TimeOfDay;
+            hour = ts.Hours;
+            min = ts.Minutes;
+            alarm_hour_text.Text = ts.Hours.ToString("D2");
+            alarm_min_text.Text = ts.Minutes.ToString("D2");
         }
 
         #region Initialization Code
@@ -50,6 +62,37 @@ namespace SENG403Mobile
             SetAlarmDays_UI();
         }
         #endregion
+
+        public void SetSounds(string[] args)
+        {
+            foreach (string s in args)
+            {
+                sound_combobox.Items.Add(s);
+            }
+        }
+
+        public string GetDays()
+        {
+            return new string(daysChecked);
+        }
+
+        public string GetRingtone()
+        {
+            return (string)sound_combobox.SelectedItem;
+        }
+
+        public TimeSpan GetAlarmTime()
+        {
+            return new TimeSpan(hour, min, 0);
+        }
+
+        public void SetAlarmTime(DateTime dt)
+        {
+            hour = dt.TimeOfDay.Hours;
+            min = dt.TimeOfDay.Minutes;
+            alarm_hour_text.Text = hour.ToString("D2");
+            alarm_min_text.Text = min.ToString("D2");
+        }
 
         #region Checked Event Handlers
         private void SundayChecked(object sender, RoutedEventArgs e)
@@ -142,8 +185,10 @@ namespace SENG403Mobile
         #region UI Updaters
         private void SetAlarmTime_UI()
         {
-            alarm_hour_text.Text = alarm.getHour().ToString();
-            alarm_min_text.Text = alarm.getMinute().ToString();
+            hour = alarm.getHour();
+            min = alarm.getMinute();
+            alarm_hour_text.Text = hour.ToString("D2");
+            alarm_min_text.Text = min.ToString("D2");
         }
 
         private void SetAlarmDays_UI()
@@ -159,10 +204,55 @@ namespace SENG403Mobile
         }
         #endregion
 
+
         private void UpdateAlarmDays()
         {
-            string alarmDays = new string(daysChecked);
-            alarm.setDays(alarmDays);
+            try
+            {
+                string alarmDays = new string(daysChecked);
+                alarm.setDays(alarmDays);
+            }
+            catch (NullReferenceException)
+            {
+                return;
+            }
+        }
+
+        private void EditAlarmTimeTap(object sender, TappedRoutedEventArgs e)
+        {
+            TimePickerFlyout timeFlyout = new TimePickerFlyout()
+            {
+                Placement = FlyoutPlacementMode.Full
+            };
+            timeFlyout.TimePicked += TimeFlyout_TimePicked;
+            timeFlyout.ShowAt(this);
+        }
+
+        private void TimeFlyout_TimePicked(TimePickerFlyout sender, TimePickedEventArgs args)
+        {
+            TimeSpan pickedTime = args.NewTime;
+            hour = pickedTime.Hours;
+            min = pickedTime.Minutes;
+            alarm_hour_text.Text = pickedTime.Hours.ToString();
+            alarm_min_text.Text = pickedTime.Minutes.ToString();
+            alarm.setDateTime(pickedTime.Hours, pickedTime.Minutes);
+        }
+
+        private void AlarmSettingsTap(object sender, TappedRoutedEventArgs e)
+        {
+            
+            if (inSettings)
+            {
+                inSettings = false;
+                alarm_construct_canvas.Visibility = Visibility.Visible;
+                alarm_edit_canvas.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                inSettings = true;
+                alarm_construct_canvas.Visibility = Visibility.Collapsed;
+                alarm_edit_canvas.Visibility = Visibility.Visible;
+            }
         }
     }
 }

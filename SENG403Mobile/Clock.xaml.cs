@@ -141,7 +141,7 @@ namespace SENG403Mobile
                 ComputeAngles();
                 RenderAngles(RenderMode.RenderAll);
                 UpdateTimeLabel();
-                FireUpdateTime(GetDate());
+                //FireUpdateTime(GetDate());
                 //currSec = currSec + 1 >= 60 ? 0 : currSec + 1;
                 //if (minuteDegrees % CONSTANTS.DEG_PER_HOUR == 0)
                 //{   //every minute update
@@ -179,19 +179,21 @@ namespace SENG403Mobile
             else
                 min = currMin.ToString();
             if (currHour < 10)
-                hour = "  " + currHour.ToString();
+                hour = " " + currHour.ToString();
             else
                 hour = currHour.ToString();
             if (meridiem == "PM" && (currHour + 12 < 24))
                 hour = (currHour + 12).ToString();
             else if (meridiem == "AM" && currHour + 12 == 24)
                 hour = "00";
-            if (currHour == 12 && currMin == 0 && currSec >= 0)
-                FireUpdateTime(GetDate());  //update Datelabel
+            //if (currHour == 12 && currMin == 0 && currSec >= 0)
+            //    FireUpdateTime(GetDate());  //update Datelabel
             sec_text.Text = sec;
             min_text.Text = min;
             hour_text.Text = hour;
         }
+
+        
 
         private void UpdateTimeLabel(double m, double h)
         {
@@ -241,11 +243,6 @@ namespace SENG403Mobile
         #endregion
 
         #region event handlers
-        private void FireUpdateTime(String arg)
-        {
-            UpdateTimeEvent(this, arg);
-        }
-
         private void OnTimeZoneChange(double offset)
         {
             hourOffset = offset;

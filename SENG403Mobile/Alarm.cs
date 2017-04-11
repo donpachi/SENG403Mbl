@@ -111,7 +111,7 @@ namespace SENG403Mobile
             {
                 if (Clock.Now().ToString("T").Equals(alarm.getDateTime().ToString("T")))
                 {
-                    System.Diagnostics.Debug.WriteLine(alarm.getDateTime().ToString("T"));
+                    //System.Diagnostics.Debug.WriteLine(alarm.getDateTime().ToString("T"));
 
                     // If the current time is one of the alarms, then check if the day is also correct
                     if (alarm.getDays() == "0000000" || alarm.getDays()[day].Equals('1'))
@@ -152,10 +152,12 @@ namespace SENG403Mobile
         /// <param name="time">The time the alarm is set to trigger on</param>
         /// <param name="days">The days the alarm is set to trigger on</param>
         /// <param name="alarmSound">The alarm sound set to play once the alarm goes off.</param>
-        public void setNewAlarm(DateTime time, String days, SoundModule soundFile)
+        public Alarm setNewAlarm(DateTime time, String days, SoundModule soundFile)
         {
             // Create a new alarm and append it to the alarmList
-            alarmList.Add(new Alarm(time, days, soundFile));
+            Alarm alarm = new Alarm(time, days, soundFile);
+            alarmList.Add(alarm);
+            return alarm;
         }
 
         /// <summary>
@@ -221,6 +223,11 @@ namespace SENG403Mobile
         {
             //if (onRing != null)
             onRing();
+        }
+
+        public Alarm()
+        {
+            days = "0000000";
         }
 
         // Alarm constructor

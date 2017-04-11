@@ -26,30 +26,20 @@ namespace SENG403Mobile
     public sealed partial class MainPage : Page
     {
         AlarmHandler alarmHandler;
+        SoundModule sound;
 
         public MainPage()
         {
             
             this.InitializeComponent();
-            Clock.UpdateTimeEvent += UpdateTimeLabel;
             //Dateblock.Text = DateTime.Now.DayOfWeek.ToString();//DateTime.Now.ToString();
             alarmHandler = new AlarmHandler();
             Alarm.onRing += OnAlarmRing;
             // DateTime.Now.Date.ToString;
 
             // populate with sounds
-            SoundModule sound = new SoundModule();
-            string[] availableSounds = sound.getSounds();
-            for (int i = 0; i < availableSounds.Length; i++)
-            {
-                comboBoxSounds.Items.Add(availableSounds[i]);
-            }
-
-        }
-
-        private void UpdateTimeLabel(object sender, String args)
-        {
-
+            sound = new SoundModule();
+            upcoming_alarm_panel.SetSounds(sound.getSounds());
         }
 
         private void OnAlarmRing()
@@ -57,7 +47,6 @@ namespace SENG403Mobile
             buttonDismissAlarm.Visibility = Visibility.Visible;
             buttonSnoozeAlarm.Visibility = Visibility.Visible;
             setAlarm.Visibility = Visibility.Collapsed;
-            timePicker.Visibility = Visibility.Collapsed;
             confirmAlarm.Visibility = Visibility.Collapsed;
         }
 
@@ -96,42 +85,20 @@ namespace SENG403Mobile
 
             // string which holds 0 or 1 for each day of the week (Sunday = 0th, Monday = 1th, ..., Saturday = 6th)
             // TODO: Need to set the appropriate days as '1', everything else should work after that
-            string alarmDaysChecked = "0000000";
+            string alarmDaysChecked = new_alarm_container.GetDays();
 
-            //// Build days string before creating alarm - need to update for button implementation instead
-
-            //if (checkBox_Sunday.IsChecked == true) { alarmDaysChecked += "1"; }
-            //else { alarmDaysChecked += "0"; }
-
-            //if (checkBox_Monday.IsChecked == true) { alarmDaysChecked += "1"; }
-            //else { alarmDaysChecked += "0"; }
-
-            //if (checkBox_Tuesday.IsChecked == true) { alarmDaysChecked += "1"; }
-            //else { alarmDaysChecked += "0"; }
-
-            //if (checkBox_Wednesday.IsChecked == true) { alarmDaysChecked += "1"; }
-            //else { alarmDaysChecked += "0"; }
-
-            //if (checkBox_Thursday.IsChecked == true) { alarmDaysChecked += "1"; }
-            //else { alarmDaysChecked += "0"; }
-
-            //if (checkBox_Friday.IsChecked == true) { alarmDaysChecked += "1"; }
-            //else { alarmDaysChecked += "0"; }
-
-            //if (checkBox_Saturday.IsChecked == true) { alarmDaysChecked += "1"; }
-            //else { alarmDaysChecked += "0"; }
-
-            String selectedSound = (String)comboBoxSounds.SelectedItem;
+            String selectedSound = new_alarm_container.GetRingtone();
             newSound.setSound(selectedSound);
 
-            DateTime dt = DateTime.Parse(timePicker.Time.ToString());
-            alarmHandler.setNewAlarm(dt, alarmDaysChecked, newSound);       
+            DateTime dt = DateTime.Parse(new_alarm_container.GetAlarmTime().ToString());
+            new_alarm_container.Subscribe(alarmHandler.setNewAlarm(dt, alarmDaysChecked, newSound));       
         }
 
         private void setChecked(object sender, RoutedEventArgs e)
         {
             setalarmcanvas.Visibility = Visibility.Visible;
-            
+            new_alarm_container.SetAlarmTime(DateTime.Now);
+            new_alarm_container.SetSounds(sound.getSounds());
         }
 
         private void setUnchecked(object sender, RoutedEventArgs e)
