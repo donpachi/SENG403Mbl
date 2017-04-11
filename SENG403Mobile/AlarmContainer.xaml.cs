@@ -36,11 +36,45 @@ namespace SENG403Mobile
 
         public AlarmContainer(DateTime dt)
         {
+            this.InitializeComponent();
+            InitButtonArray();
             TimeSpan ts = dt.TimeOfDay;
             hour = ts.Hours;
             min = ts.Minutes;
             alarm_hour_text.Text = ts.Hours.ToString("D2");
             alarm_min_text.Text = ts.Minutes.ToString("D2");
+            inSettings = false;
+        }
+
+        public AlarmContainer(Alarm alarm)
+        {
+            this.InitializeComponent();
+            InitButtonArray();
+            this.alarm = alarm;
+            TimeSpan ts = alarm.getDateTime().TimeOfDay;
+            hour = ts.Hours;
+            min = ts.Minutes;
+            SetAlarmDays_UI();
+            alarm_hour_text.Text = ts.Hours.ToString("D2");
+            alarm_min_text.Text = ts.Minutes.ToString("D2");
+            sound_combobox.SelectedItem = alarm.getSound();
+            alarm_label.Text = alarm.getMessage() ?? "";
+            inSettings = false;
+        }
+
+        public AlarmContainer(AlarmContainer ac)
+        {
+            InitializeComponent();
+            InitButtonArray();
+            alarm = new Alarm(ac.alarm);
+            hour = ac.hour;
+            min = ac.min;
+            ac.daysChecked.CopyTo(daysChecked, 0);  //deep copy
+            SetAlarmDays_UI();
+            alarm_hour_text.Text = hour.ToString("D2");
+            alarm_min_text.Text = min.ToString("D2");
+            sound_combobox.SelectedItem = ac.alarm.getSound();
+            alarm_label.Text = ac.alarm.getMessage() ?? "";
         }
 
         #region Initialization Code
@@ -63,7 +97,7 @@ namespace SENG403Mobile
         }
         #endregion
 
-        public void SetSounds(string[] args)
+        public void SetRingtones(string[] args)
         {
             foreach (string s in args)
             {
@@ -92,6 +126,17 @@ namespace SENG403Mobile
             min = dt.TimeOfDay.Minutes;
             alarm_hour_text.Text = hour.ToString("D2");
             alarm_min_text.Text = min.ToString("D2");
+        }
+
+        internal void Reset()
+        {
+            hour = 0;
+            min = 0;
+            alarm_hour_text.Text = hour.ToString("D2");
+            alarm_min_text.Text = min.ToString("D2");
+            alarm_label.Text = "";
+            foreach (ToggleButton button in buttons)
+                button.IsChecked = false;
         }
 
         #region Checked Event Handlers

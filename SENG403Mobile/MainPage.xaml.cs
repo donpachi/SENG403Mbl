@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -25,6 +26,9 @@ namespace SENG403Mobile
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        ObservableCollection<Control> Controls { get; set; }
+
+        List<AlarmContainer> alarmStack = new List<AlarmContainer>();
         AlarmHandler alarmHandler;
         SoundModule sound;
 
@@ -39,7 +43,11 @@ namespace SENG403Mobile
 
             // populate with sounds
             sound = new SoundModule();
-            upcoming_alarm_panel.SetSounds(sound.getSounds());
+            upcoming_alarm_panel.SetRingtones(sound.getSounds());
+
+            Controls = new ObservableCollection<Control>(alarmStack);
+            alarm_listview.ItemsSource = Controls;
+
         }
 
         private void OnAlarmRing()
@@ -91,14 +99,17 @@ namespace SENG403Mobile
             newSound.setSound(selectedSound);
 
             DateTime dt = DateTime.Parse(new_alarm_container.GetAlarmTime().ToString());
-            new_alarm_container.Subscribe(alarmHandler.setNewAlarm(dt, alarmDaysChecked, newSound));       
+            Alarm newAlarm = alarmHandler.setNewAlarm(dt, alarmDaysChecked, newSound);
+            new_alarm_container.Subscribe(newAlarm);
+            PopulateAlarmStackBox(new_alarm_container, newAlarm);
         }
 
         private void setChecked(object sender, RoutedEventArgs e)
         {
             setalarmcanvas.Visibility = Visibility.Visible;
+            new_alarm_container.Reset();
             new_alarm_container.SetAlarmTime(DateTime.Now);
-            new_alarm_container.SetSounds(sound.getSounds());
+            new_alarm_container.SetRingtones(sound.getSounds());
         }
 
         private void setUnchecked(object sender, RoutedEventArgs e)
@@ -116,12 +127,21 @@ namespace SENG403Mobile
         {
             main_time_canvas.Visibility = Visibility.Collapsed;
             main_alarm_canvas.Visibility = Visibility.Visible;
+
         }
 
         private void ShowTime(object sender, RoutedEventArgs e)
         {
             main_time_canvas.Visibility = Visibility.Visible;
             main_alarm_canvas.Visibility = Visibility.Collapsed;
+        }
+
+        private void PopulateAlarmStackBox(AlarmContainer alarmContainer, Alarm alarm)
+        {
+            AlarmContainer newContainer = new AlarmContainer(alarmContainer);
+            newContainer.Subscribe(alarm);
+            alarmStack.Add(newContainer);
+            Controls.Add(newContainer);
         }
     }
 }

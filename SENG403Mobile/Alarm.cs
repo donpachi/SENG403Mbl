@@ -230,6 +230,15 @@ namespace SENG403Mobile
             days = "0000000";
         }
 
+        public Alarm(Alarm alarm)
+        {
+            time = alarm.time;
+            settime = alarm.settime;
+            days = alarm.days;
+            alarmSound = alarm.alarmSound;
+            message = alarm.message;
+        }
+
         // Alarm constructor
         public Alarm(DateTime time, String days, SoundModule alarmSound)
         {
