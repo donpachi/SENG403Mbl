@@ -74,6 +74,7 @@ namespace SENG403Mobile
             this.ah = ah;
             dTimer.Tick += ah.Timer_Tick;
         }
+
         #region time-specific functions
         private void UpdateTime()
         {
@@ -141,7 +142,7 @@ namespace SENG403Mobile
 
         private void DTimer_Tick(object sender, object e)
         {
-            Tick();
+            UpdateTime();
             if (animateClock)
             {
                 ComputeAngles();
@@ -156,22 +157,22 @@ namespace SENG403Mobile
             }
         }
 
-        private void Tick()
-        {
-            if (currSec + 1 >= 60)
-            {
-                currSec = 0;
-                if (currMin + 1 >= 60)
-                {
-                    currMin = 0;
-                    UpdateTime();   //grab system time every hour
-                }
-                else
-                    currMin++;
-            }
-            else
-                currSec++;
-        }
+        //private void Tick()
+        //{
+        //    if (currSec + 1 >= 60)
+        //    {
+        //        currSec = 0;
+        //        if (currMin + 1 >= 60)
+        //        {
+        //            currMin = 0;
+        //            UpdateTime();   //grab system time every hour
+        //        }
+        //        else
+        //            currMin++;
+        //    }
+        //    else
+        //        currSec++;
+        //}
 
         private void UpdateTimeLabel()
         {
