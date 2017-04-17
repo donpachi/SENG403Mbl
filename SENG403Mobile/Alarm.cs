@@ -31,8 +31,6 @@ namespace SENG403Mobile
             // Create a list of Alarms and populate it with any previously set alarms
             this.alarmList = new List<Alarm>();
 
-            // Start the clock
-            startclock();
         }
 
 
@@ -82,19 +80,7 @@ namespace SENG403Mobile
             alarmList.Remove(alarm);
         }
 
-        /// <summary>
-        /// Start the timer, create a tick event and set tick interval to one second
-        /// </summary>
-        private void startclock()
-        {
-            // Create a timer object
-            DispatcherTimer timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromSeconds(1);   // Set the timer interval to one second
-            timer.Tick += Timer_Tick; ;    // After every one second, we trigger a tick event
-            timer.Start();  // Start the timer
-        }
-
-        private void Timer_Tick(object sender, object e)
+        public void Timer_Tick(object sender, object e)
         {
             // Get the CURRENT date and time in the form: 'yyyy-mm-dd hh:mm:ss AM/PM' (i.e: 2017-01-28 12:20:00 PM)
             DateTime dateAndTime = Clock.Now();
@@ -107,41 +93,44 @@ namespace SENG403Mobile
 
             // Check every second if the current time is the one we're checking for
             // If so, set the alarm to ring
-            foreach (Alarm alarm in alarmList)
+            if (alarmList.Count > 0)
             {
-                if (Clock.Now().ToString("T").Equals(alarm.getDateTime().ToString("T")))
+                foreach (Alarm alarm in alarmList)
                 {
-                    //System.Diagnostics.Debug.WriteLine(alarm.getDateTime().ToString("T"));
-
-                    // If the current time is one of the alarms, then check if the day is also correct
-                    if (alarm.getDays() == "0000000" || alarm.getDays()[day].Equals('1'))
+                    if (Clock.Now().ToString("T").Equals(alarm.getDateTime().ToString("T")))
                     {
-                        if (currentAlarm != null)
+                        //System.Diagnostics.Debug.WriteLine(alarm.getDateTime().ToString("T"));
+
+                        // If the current time is one of the alarms, then check if the day is also correct
+                        if (alarm.getDays() == "0000000" || alarm.getDays()[day].Equals('1'))
                         {
-                            currentAlarm.setRinging(false);
+                            if (currentAlarm != null)
+                            {
+                                currentAlarm.setRinging(false);
+                            }
+
+                            // Play the alarm and set the current alarm to this alarm
+                            currentAlarm = alarm;
+                            currentAlarm.setRinging(true);
                         }
-
-                        // Play the alarm and set the current alarm to this alarm
-                        currentAlarm = alarm;
-                        currentAlarm.setRinging(true);
                     }
+                    //if (time == alarm.getDateTime().ToString("HH:mm:ss"))
+                    //{
+
+                    //    // Play the alarm and set the current alarm to this alarm
+                    //    currentAlarm = alarm;
+                    //    currentAlarm.setRinging(true);
+                    //    //BackgroundMediaPlayer.Current.Play();
+                    //}
+                    //if (time == alarm.getDateTime().ToString("HH:mm:ss"))
+                    //{
+
+                    //    // Play the alarm and set the current alarm to this alarm
+                    //    currentAlarm = alarm;
+                    //    currentAlarm.setRinging(true);
+                    //    //BackgroundMediaPlayer.Current.Play();
+                    //}
                 }
-                //if (time == alarm.getDateTime().ToString("HH:mm:ss"))
-                //{
-
-                //    // Play the alarm and set the current alarm to this alarm
-                //    currentAlarm = alarm;
-                //    currentAlarm.setRinging(true);
-                //    //BackgroundMediaPlayer.Current.Play();
-                //}
-                //if (time == alarm.getDateTime().ToString("HH:mm:ss"))
-                //{
-
-                //    // Play the alarm and set the current alarm to this alarm
-                //    currentAlarm = alarm;
-                //    currentAlarm.setRinging(true);
-                //    //BackgroundMediaPlayer.Current.Play();
-                //}
             }
         }
         

@@ -49,6 +49,7 @@ namespace SENG403Mobile
         private string date, timestring, meridiem;
         Boolean animateClock;
         DateTime currentDateTime;
+        AlarmHandler ah;
 
         public delegate void TimeUpdateEvent(object o, String arg);
         public static event TimeUpdateEvent UpdateTimeEvent;
@@ -68,6 +69,11 @@ namespace SENG403Mobile
             //timezone?
         }
 
+        public void RegisterAlarmHandler(AlarmHandler ah)
+        {
+            this.ah = ah;
+            dTimer.Tick += ah.Timer_Tick;
+        }
         #region time-specific functions
         private void UpdateTime()
         {

@@ -8,7 +8,9 @@
     mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:Key="AlarmGroupTemplate" x:DataType="x:Bind">
-            <local:AlarmContainer/>
+            <Grid Margin="10">
+                <local:AlarmContainer Padding="0" BorderThickness="0"/>
+            </Grid>
         </DataTemplate>
     </Page.Resources>
     <Canvas>
@@ -18,7 +20,7 @@
         </Canvas.Background>
         <Canvas x:Name="main_time_canvas" Height="640" Width="360">
             <Canvas x:Name="clock_canvas" HorizontalAlignment="Center" VerticalAlignment="Center" Canvas.Left="85" Canvas.Top="30" >
-                <local:Clock x:Name="analog_clock" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <local:Clock x:Name="ClockUI" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 <Button x:Name="buttonDismissAlarm" Content="Dismiss" Canvas.Left="-52"  Width="300" Height="100" Canvas.Top="320" FontSize="24" Visibility="Collapsed" Background="#33FFFFFF" Click="clickDismiss"/>
                 <Button x:Name="buttonSnoozeAlarm" Content="Snooze" Canvas.Left="-52"  Width="300" Height="100" Canvas.Top="425" FontSize="24" Visibility="Collapsed" Background="#33FFFFFF" Click="clickSnooze"/>
             </Canvas>
@@ -40,11 +42,12 @@
             </Canvas>
         </Canvas>
         <Canvas x:Name="main_alarm_canvas" Height="580" Width="360" Visibility="Collapsed">
-            <ListView x:Name="alarm_listview" Height="500" Width="320" Margin="10" ItemsSource="{Binding}">
+            <ListView x:Name="alarm_listview" Height="500" Width="320" Margin="10" ItemsSource="{Binding}"
+                      SelectionMode="None" IsItemClickEnabled="False">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
-                        <Setter Property="Padding" Value="15"/>
-                        <Setter Property="BorderThickness" Value="10"/>
+                        <Setter Property="Padding" Value="0"/>
+                        <Setter Property="BorderThickness" Value="0"/>
                     </Style>
                 </ListView.ItemContainerStyle>
             </ListView>

@@ -38,6 +38,7 @@ namespace SENG403Mobile
             this.InitializeComponent();
             //Dateblock.Text = DateTime.Now.DayOfWeek.ToString();//DateTime.Now.ToString();
             alarmHandler = new AlarmHandler();
+            ClockUI.RegisterAlarmHandler(alarmHandler);
             Alarm.onRing += OnAlarmRing;
             // DateTime.Now.Date.ToString;
 
