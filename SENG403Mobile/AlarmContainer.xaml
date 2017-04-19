@@ -19,9 +19,10 @@
     </UserControl.Resources>
     <Canvas x:Name="alarm_container">
         <Canvas x:Name="alarm_construct_canvas" Height="70" Width="300">
-            <Canvas x:Name="digital_canvas" Width="105" Height="52" Canvas.Left="10" Canvas.Top="10" Tapped="EditAlarmTimeTap">
+            <Canvas x:Name="digital_canvas" Width="105" Height="52" Canvas.Left="10" Canvas.Top="10">
                 <TextBlock x:Name="alarm_hour_text" FontSize="60" Canvas.Top="-18" Foreground="#D8FFFFFF" TextAlignment="Center" Text="00" FontWeight="Light" Canvas.Left="3" Height="68"/>
                 <TextBlock x:Name="alarm_min_text" Text="00" FontSize="35" Foreground="#D8FFFFFF" Canvas.Left="69" FontWeight="Light" Height="46" Canvas.Top="-8"/>
+                <Button x:Name="edit_time_btn" Width="105" Height="52" Tapped="EditAlarmTimeTap" Background="Transparent"/>
             </Canvas>
             <Canvas x:Name="alarm_days" Canvas.Left="120" Canvas.Top="6" Width="172" Height="67">
                 <ToggleButton x:Name="alarm_days_mon" Content="M" Width="30" Height="30" Background="Transparent" Padding="0" FontSize="22" Foreground="#3FFFFFFF" BorderThickness="0" Checked="MondayChecked" Unchecked="MondayUnchecked" Style="{StaticResource OpacityToggleBox}"/>

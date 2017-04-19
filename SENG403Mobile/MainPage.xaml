@@ -8,15 +8,15 @@
     mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:Key="AlarmGroupTemplate" x:DataType="x:Bind">
-            <Grid Margin="10">
-                <local:AlarmContainer Padding="0" BorderThickness="0"/>
-            </Grid>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Height="70" Width="300">
+                <local:AlarmContainer/>
+            </StackPanel>
         </DataTemplate>
     </Page.Resources>
     <Canvas>
         <Canvas.Background>
             <!-- #FFA1F0F0 -->
-            <SolidColorBrush Color="#FF779E82"/>
+            <SolidColorBrush Color="#FF341B20"/>
         </Canvas.Background>
         <Canvas x:Name="main_time_canvas" Height="640" Width="360">
             <Canvas x:Name="clock_canvas" HorizontalAlignment="Center" VerticalAlignment="Center" Canvas.Left="85" Canvas.Top="30" >
@@ -42,12 +42,16 @@
             </Canvas>
         </Canvas>
         <Canvas x:Name="main_alarm_canvas" Height="580" Width="360" Visibility="Collapsed">
-            <ListView x:Name="alarm_listview" Height="500" Width="320" Margin="10" ItemsSource="{Binding}"
+            <ListView x:Name="alarm_listview" Height="500" Width="320" ItemsSource="{Binding}"
                       SelectionMode="None" IsItemClickEnabled="False">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
                         <Setter Property="Padding" Value="0"/>
                         <Setter Property="BorderThickness" Value="0"/>
+                        <Setter Property="Height" Value="70"/>
+                        <Setter Property="Width" Value="300"/>
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
                     </Style>
                 </ListView.ItemContainerStyle>
             </ListView>

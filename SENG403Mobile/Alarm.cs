@@ -13,7 +13,7 @@ namespace SENG403Mobile
 
     public class AlarmHandler
     {
-        static public event EventHandler CustomEvent;
+        //static public event EventHandler CustomEvent;
 
         // Create a list of Alarms
         public List<Alarm> alarmList;

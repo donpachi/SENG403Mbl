@@ -51,8 +51,8 @@ namespace SENG403Mobile
         DateTime currentDateTime;
         AlarmHandler ah;
 
-        public delegate void TimeUpdateEvent(object o, String arg);
-        public static event TimeUpdateEvent UpdateTimeEvent;
+        //public delegate void TimeUpdateEvent(object o, String arg);
+        //public static event TimeUpdateEvent UpdateTimeEvent;
 
         public Clock()
         {
@@ -174,6 +174,9 @@ namespace SENG403Mobile
         //        currSec++;
         //}
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void UpdateTimeLabel()
         {
             string sec, min, hour;
@@ -186,21 +189,19 @@ namespace SENG403Mobile
             else
                 min = currMin.ToString();
             if (currHour < 10)
-                hour = " " + currHour.ToString();
+                hour = "0" + currHour.ToString();
             else
                 hour = currHour.ToString();
             if (meridiem == "PM" && (currHour + 12 < 24))
                 hour = (currHour + 12).ToString();
             else if (meridiem == "AM" && currHour + 12 == 24)
-                hour = "00";
+                hour = "12";
             //if (currHour == 12 && currMin == 0 && currSec >= 0)
             //    FireUpdateTime(GetDate());  //update Datelabel
             sec_text.Text = sec;
             min_text.Text = min;
             hour_text.Text = hour;
         }
-
-        
 
         private void UpdateTimeLabel(double m, double h)
         {
@@ -214,7 +215,7 @@ namespace SENG403Mobile
             else
                 min = m.ToString();
             if (h < 10)
-                hour = "  " + h.ToString();
+                hour = "0" + h.ToString();
             else
                 hour = h.ToString();
             if (meridiem == "PM")
