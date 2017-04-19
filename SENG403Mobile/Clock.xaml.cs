@@ -44,14 +44,15 @@ namespace SENG403Mobile
         public double MinuteOffset { get { return minuteOffset; } set { minuteOffset = value; } }
         public double degreeInterval;
         DispatcherTimer dTimer;
-        private double secondDegrees, minuteDegrees, hourDegrees;
+        private double minuteDegrees, hourDegrees;
         private double currHour, currMin, currSec;
         private string date, timestring, meridiem;
         Boolean animateClock;
         DateTime currentDateTime;
+        AlarmHandler ah;
 
-        public delegate void TimeUpdateEvent(object o, String arg);
-        public static event TimeUpdateEvent UpdateTimeEvent;
+        //public delegate void TimeUpdateEvent(object o, String arg);
+        //public static event TimeUpdateEvent UpdateTimeEvent;
 
         public Clock()
         {
@@ -66,6 +67,12 @@ namespace SENG403Mobile
             dTimer.Start();
 
             //timezone?
+        }
+
+        public void RegisterAlarmHandler(AlarmHandler ah)
+        {
+            this.ah = ah;
+            dTimer.Tick += ah.Timer_Tick;
         }
 
         #region time-specific functions
@@ -135,13 +142,13 @@ namespace SENG403Mobile
 
         private void DTimer_Tick(object sender, object e)
         {
+            UpdateTime();
             if (animateClock)
             {
-                UpdateTime();
                 ComputeAngles();
                 RenderAngles(RenderMode.RenderAll);
                 UpdateTimeLabel();
-                FireUpdateTime(GetDate());
+                //FireUpdateTime(GetDate());
                 //currSec = currSec + 1 >= 60 ? 0 : currSec + 1;
                 //if (minuteDegrees % CONSTANTS.DEG_PER_HOUR == 0)
                 //{   //every minute update
@@ -150,6 +157,26 @@ namespace SENG403Mobile
             }
         }
 
+        //private void Tick()
+        //{
+        //    if (currSec + 1 >= 60)
+        //    {
+        //        currSec = 0;
+        //        if (currMin + 1 >= 60)
+        //        {
+        //            currMin = 0;
+        //            UpdateTime();   //grab system time every hour
+        //        }
+        //        else
+        //            currMin++;
+        //    }
+        //    else
+        //        currSec++;
+        //}
+
+        /// <summary>
+        /// 
+        /// </summary>
         private void UpdateTimeLabel()
         {
             string sec, min, hour;
@@ -162,15 +189,15 @@ namespace SENG403Mobile
             else
                 min = currMin.ToString();
             if (currHour < 10)
-                hour = "  " + currHour.ToString();
+                hour = "0" + currHour.ToString();
             else
                 hour = currHour.ToString();
             if (meridiem == "PM" && (currHour + 12 < 24))
                 hour = (currHour + 12).ToString();
             else if (meridiem == "AM" && currHour + 12 == 24)
-                hour = "00";
-            if (currHour == 12 && currMin == 0 && currSec >= 0)
-                FireUpdateTime(GetDate());  //update Datelabel
+                hour = "12";
+            //if (currHour == 12 && currMin == 0 && currSec >= 0)
+            //    FireUpdateTime(GetDate());  //update Datelabel
             sec_text.Text = sec;
             min_text.Text = min;
             hour_text.Text = hour;
@@ -188,7 +215,7 @@ namespace SENG403Mobile
             else
                 min = m.ToString();
             if (h < 10)
-                hour = "  " + h.ToString();
+                hour = "0" + h.ToString();
             else
                 hour = h.ToString();
             if (meridiem == "PM")
@@ -224,11 +251,6 @@ namespace SENG403Mobile
         #endregion
 
         #region event handlers
-        private void FireUpdateTime(String arg)
-        {
-            UpdateTimeEvent(this, arg);
-        }
-
         private void OnTimeZoneChange(double offset)
         {
             hourOffset = offset;

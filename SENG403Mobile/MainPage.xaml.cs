@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -7,6 +8,7 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Media.Core;
 using Windows.Media.Playback;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -24,76 +26,92 @@ namespace SENG403Mobile
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        ObservableCollection<Control> Controls { get; set; }
+
+        List<AlarmContainer> alarmStack = new List<AlarmContainer>();
         AlarmHandler alarmHandler;
-        private bool setToggle = false;
+        SoundModule sound;
 
         public MainPage()
         {
             
             this.InitializeComponent();
-            BackgroundMediaPlayer.Current.SetUriSource(new Uri("ms-winsoundevent:Notification.Looping.Alarm10"));
-            BackgroundMediaPlayer.Current.IsLoopingEnabled = true;
-            BackgroundMediaPlayer.Current.Pause();
-            Clock.UpdateTimeEvent += UpdateTimeLabel;
             //Dateblock.Text = DateTime.Now.DayOfWeek.ToString();//DateTime.Now.ToString();
             alarmHandler = new AlarmHandler();
+            ClockUI.RegisterAlarmHandler(alarmHandler);
             Alarm.onRing += OnAlarmRing;
             // DateTime.Now.Date.ToString;
-        }
 
-        private void UpdateTimeLabel(object sender, String args)
-        {
+            // populate with sounds
+            sound = new SoundModule();
+            upcoming_alarm_panel.SetRingtones(sound.getSounds());
+
+            Controls = new ObservableCollection<Control>(alarmStack);
+            alarm_listview.ItemsSource = Controls;
 
         }
 
         private void OnAlarmRing()
         {
-            BackgroundMediaPlayer.Current.Play();
             buttonDismissAlarm.Visibility = Visibility.Visible;
             buttonSnoozeAlarm.Visibility = Visibility.Visible;
+            setalarmcanvas.Visibility = Visibility.Collapsed;
             setAlarm.Visibility = Visibility.Collapsed;
-            timePicker.Visibility = Visibility.Collapsed;
-            confirmAlarm.Visibility = Visibility.Collapsed;
+            //confirmAlarm.Visibility = Visibility.Collapsed;
         }
 
         private void clickSnooze(object sender, RoutedEventArgs e)
         {
+            alarmHandler.getCurrentAlarm().snooze(1);
+            alarmHandler.currentAlarm = null;
             buttonDismissAlarm.Visibility = Visibility.Collapsed;
             buttonSnoozeAlarm.Visibility = Visibility.Collapsed;
-            BackgroundMediaPlayer.Current.Pause();
             setAlarm.Visibility = Visibility.Visible;
-            alarmHandler.currentAlarm.snooze(1);
-            BackgroundMediaPlayer.Current.SetUriSource(new Uri("ms-winsoundevent:Notification.Looping.Alarm10"));
-            BackgroundMediaPlayer.Current.Pause();
-
         }
 
         private void clickDismiss(object sender, RoutedEventArgs e)
         {
+            Alarm ringingAlarm = alarmHandler.getCurrentAlarm();
+            ringingAlarm.setRinging(false);
+            alarmHandler.endAlarm(ringingAlarm);
+            alarmHandler.currentAlarm = null;
+            
             buttonDismissAlarm.Visibility = Visibility.Collapsed;
             buttonSnoozeAlarm.Visibility = Visibility.Collapsed;
-            BackgroundMediaPlayer.Current.Pause();
             setAlarm.Visibility = Visibility.Visible;
-            alarmHandler.currentAlarm = null;
         }
 
         private void confirmClicked(object sender, RoutedEventArgs e)
         {
-            confirmAlarm.Visibility = Visibility.Collapsed;
-            timePicker.Visibility = Visibility.Collapsed;
-            setAlarm.Visibility = Visibility.Visible;
+            setalarmcanvas.Visibility = Visibility.Collapsed;
+            setAlarm.IsChecked = false;
 
-            DateTime dt = DateTime.Parse(timePicker.Time.ToString());
-            alarmHandler.setNewAlarm(dt);
+            SoundModule newSound = new SoundModule();
 
-            BackgroundMediaPlayer.Current.SetUriSource(new Uri("ms-winsoundevent:Notification.Looping.Alarm10"));
-            BackgroundMediaPlayer.Current.Pause();
+            Alarm[] alarmList = alarmHandler.getAlarms(); // This holds all the alarms that have been set
 
+            // Use alarm.setDateTime(int hour, int minutes) to set a new time for the alarm
+            // Use alarm.setDays(String days) to set new days for the alarm
+
+            // string which holds 0 or 1 for each day of the week (Sunday = 0th, Monday = 1th, ..., Saturday = 6th)
+            // TODO: Need to set the appropriate days as '1', everything else should work after that
+            string alarmDaysChecked = new_alarm_container.GetDays();
+
+            String selectedSound = new_alarm_container.GetRingtone();
+            newSound.setSound(selectedSound);
+
+            DateTime dt = DateTime.Parse(new_alarm_container.GetAlarmTime().ToString());
+            Alarm newAlarm = alarmHandler.setNewAlarm(dt, alarmDaysChecked, newSound);
+            //new_alarm_container.Subscribe(newAlarm);
+            //PopulateAlarmStackBox(new_alarm_container, newAlarm);
         }
 
         private void setChecked(object sender, RoutedEventArgs e)
         {
             setalarmcanvas.Visibility = Visibility.Visible;
+            new_alarm_container.Reset();
+            new_alarm_container.SetAlarmTime(DateTime.Now);
+            new_alarm_container.SetRingtones(sound.getSounds());
         }
 
         private void setUnchecked(object sender, RoutedEventArgs e)
@@ -104,6 +122,33 @@ namespace SENG403Mobile
         private void cancelClicked(object sender, RoutedEventArgs e)
         {
             setalarmcanvas.Visibility = Visibility.Collapsed;
+            setAlarm.IsChecked = false;
+        }
+
+        private void ShowAlarmList(object sender, RoutedEventArgs e)
+        {
+            main_time_canvas.Visibility = Visibility.Collapsed;
+            main_alarm_canvas.Visibility = Visibility.Visible;
+            Controls.Clear();
+            foreach (Alarm alarm in alarmHandler.alarmList)
+            {
+                AlarmContainer newcontainer = new AlarmContainer(alarm);
+                Controls.Add(newcontainer);
+            }
+        }
+
+        private void ShowTime(object sender, RoutedEventArgs e)
+        {
+            main_time_canvas.Visibility = Visibility.Visible;
+            main_alarm_canvas.Visibility = Visibility.Collapsed;
+        }
+
+        private void PopulateAlarmStackBox(AlarmContainer alarmContainer, Alarm alarm)
+        {
+            AlarmContainer newContainer = new AlarmContainer(alarmContainer);
+            newContainer.Subscribe(alarm);
+            alarmStack.Add(newContainer);
+            Controls.Add(newContainer);
         }
     }
 }
