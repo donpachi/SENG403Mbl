@@ -28,7 +28,7 @@ namespace SENG403Mobile
             // The Currently RINGING alarm, if applicable
             this.currentAlarm = null;
 
-            // Create a list of Alarms and populate it with any previously set alarms
+            // Create a list of Alarms
             this.alarmList = new List<Alarm>();
 
             // Start the clock
@@ -94,6 +94,11 @@ namespace SENG403Mobile
             timer.Start();  // Start the timer
         }
 
+        /// <summary>
+        /// Timer tick event that checks every second if an alarm needs to go off.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Timer_Tick(object sender, object e)
         {
             // Get the CURRENT date and time in the form: 'yyyy-mm-dd hh:mm:ss AM/PM' (i.e: 2017-01-28 12:20:00 PM)
@@ -110,14 +115,12 @@ namespace SENG403Mobile
             foreach (Alarm alarm in alarmList)
             {
                 // If the current time is one of the alarms, then check if the day is also correct
-                //if (time.Equals(alarm.getTime()))
                 if (time == alarm.getDateTime().ToString("HH:mm:ss"))
                 {
 
                     // Play the alarm and set the current alarm to this alarm
                     currentAlarm = alarm;
                     currentAlarm.setRinging(true);
-                    //BackgroundMediaPlayer.Current.Play();
                 }
             }
         }
@@ -171,8 +174,6 @@ namespace SENG403Mobile
             throw new Exception("Day of the week..");
         }
     }
-
-
 
     /// <summary>
     /// Alarm object containing all relevant information as to when the alarm goes off and what alarm sound it plays.
@@ -327,7 +328,16 @@ namespace SENG403Mobile
         /// <returns></returns>
         public String getCurrentlyRinging() { return this.currentlyRinging.ToString(); }
 
+        /// <summary>
+        /// Return the hour the alarm is set to go off.
+        /// </summary>
+        /// <returns></returns>
         public int getHour() { return this.settime.Hour; }
+
+        /// <summary>
+        /// Return the minute the alarm is set to go off.
+        /// </summary>
+        /// <returns></returns>
         public int getMinute() { return this.settime.Minute; }
     }
 }
