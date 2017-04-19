@@ -55,8 +55,9 @@ namespace SENG403Mobile
         {
             buttonDismissAlarm.Visibility = Visibility.Visible;
             buttonSnoozeAlarm.Visibility = Visibility.Visible;
+            setalarmcanvas.Visibility = Visibility.Collapsed;
             setAlarm.Visibility = Visibility.Collapsed;
-            confirmAlarm.Visibility = Visibility.Collapsed;
+            //confirmAlarm.Visibility = Visibility.Collapsed;
         }
 
         private void clickSnooze(object sender, RoutedEventArgs e)

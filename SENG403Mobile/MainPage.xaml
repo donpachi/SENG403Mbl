@@ -26,10 +26,10 @@
             </Canvas>
             <Canvas x:Name="setalarmcanvas"  Width="300" Height="100" Canvas.Left="29" Canvas.Top="475" Visibility="Collapsed">
                 <local:AlarmContainer x:Name="new_alarm_container"/>
-                <Button x:Name="confirmAlarm" Canvas.Left="230" Canvas.Top="72" Height="20" Width="20" Background="Transparent" Click="confirmClicked" Padding="0" BorderThickness="0">
+                <Button x:Name="confirmAlarm" Canvas.Left="230" Canvas.Top="72" Height="20" Width="20" Background="Transparent" Click="confirmClicked" Padding="0" BorderThickness="0" Visibility="Visible">
                     <Image Source="Assets/confirm_circle.png"/>
                 </Button>
-                <Button x:Name="cancelAlarm" Canvas.Left="264" Canvas.Top="72" Height="20" Width="20" Background="Transparent" Padding="0" BorderThickness="0" Click="cancelClicked">
+                <Button x:Name="cancelAlarm" Canvas.Left="264" Canvas.Top="72" Height="20" Width="20" Background="Transparent" Padding="0" BorderThickness="0" Click="cancelClicked" Visibility="Visible">
                     <Image Source="Assets/x_icon.png" />
                 </Button>
             </Canvas>
