@@ -101,8 +101,8 @@ namespace SENG403Mobile
 
             DateTime dt = DateTime.Parse(new_alarm_container.GetAlarmTime().ToString());
             Alarm newAlarm = alarmHandler.setNewAlarm(dt, alarmDaysChecked, newSound);
-            new_alarm_container.Subscribe(newAlarm);
-            PopulateAlarmStackBox(new_alarm_container, newAlarm);
+            //new_alarm_container.Subscribe(newAlarm);
+            //PopulateAlarmStackBox(new_alarm_container, newAlarm);
         }
 
         private void setChecked(object sender, RoutedEventArgs e)
@@ -128,7 +128,12 @@ namespace SENG403Mobile
         {
             main_time_canvas.Visibility = Visibility.Collapsed;
             main_alarm_canvas.Visibility = Visibility.Visible;
-
+            Controls.Clear();
+            foreach (Alarm alarm in alarmHandler.alarmList)
+            {
+                AlarmContainer newcontainer = new AlarmContainer(alarm);
+                Controls.Add(newcontainer);
+            }
         }
 
         private void ShowTime(object sender, RoutedEventArgs e)
